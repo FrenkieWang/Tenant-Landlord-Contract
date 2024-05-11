@@ -10,7 +10,7 @@ Switch to the home directory (One level above the **fronend** and **backend** fo
 
 Open Terminal, type:
 
-`npm install express cors mongoose axios faker @faker-js/faker dotenv`
+`npm install dotenv express cors mongoose axios faker @faker-js/faker`
 
 ### 2-Run the server:
 
