@@ -3,43 +3,44 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const contractSchema = new Schema({
-    landlordID: { 
-      type: Schema.Types.ObjectId, 
-      ref: 'Landlord', 
-      required: true 
-    },
-    tenantBasket: [{ 
-      type: Schema.Types.ObjectId, 
-      ref: 'Tenant',
-      required: true,
-    }],
-    contractDate: {
-      type: Date,
-      required: true
-    },
-    monthlyFee: {
-      type: Number,
-      required: true
-    },
-    doorNumber: {
-      type: String,
-      required: true
-    },
-    contractLength: {
-      type: String,
-      required: true,
-      enum: ['Month', 'Year', 'Permanent']
-    },
-    propertyType: {
-      type: String,
-      required: true,
-      enum: ['Apartment', 'Semi-Detached', 'Detached', 'Other']
-    },
-    propertyTypeOther: {
-      type: String
-    }
-  }, { collection: 'Contract' });
+  landlordID: { 
+    type: Schema.Types.ObjectId, 
+    ref: 'Landlord', 
+    required: true 
+  },
+  tenantBasket: [{ 
+    type: Schema.Types.ObjectId, 
+    ref: 'Tenant',
+    required: true,
+  }],
+  contractDate: {
+    type: Date,
+    required: true
+  },
+  monthlyFee: {
+    type: Number,
+    required: true
+  },
+  doorNumber: {
+    type: String,
+    required: true
+  },
+  contractLength: {
+    type: String,
+    required: true,
+    enum: ['Month', 'Year', 'Permanent']
+  },
+  propertyType: {
+    type: String,
+    required: true,
+    enum: ['Apartment', 'Semi-Detached', 'Detached', 'Other']
+  },
+  propertyTypeOther: {
+    type: String
+  }
+}, { collection: 'Contract' });
 
+// Validate Data in Rest API
 contractSchema.pre('validate', function(next) {
   if (!this.propertyTypeOther && this.propertyType === 'Other') {
     this.invalidate('propertyTypeOther', 'Property type must be specified if "Other" is selected');

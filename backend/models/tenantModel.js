@@ -26,6 +26,7 @@ const tenantSchema = new Schema({
   }
 }, { collection: 'Tenant' });
 
+// Validate Data in Rest API
 tenantSchema.pre('validate', function(next) {
   if (!this.titleOther && this.title === 'Other') {
     this.invalidate('titleOther', 'Title must be specified if "Other" is selected');

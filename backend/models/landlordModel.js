@@ -42,6 +42,7 @@ const landlordSchema = new Schema({
   }
 }, { collection: 'Landlord' });
 
+// Validate Data in Rest API
 landlordSchema.pre('validate', function(next) {
   if (!this.titleOther && this.title === 'Other') {
     this.invalidate('titleOther', 'Title must be specified if "Other" is selected');

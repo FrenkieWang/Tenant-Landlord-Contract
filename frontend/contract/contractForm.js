@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        // Validate Data in User Interface
         if (contract.tenantBasket.length < 1 || contract.tenantBasket.length > 3) {
             alert("Contract can only have 1 to 3 Tenants!");
             return; // Prevent Submission
