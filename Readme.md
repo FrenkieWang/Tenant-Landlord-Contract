@@ -3,13 +3,14 @@
 
 ## Detailed working (and tested) setup instructions
 
+
 ### 1-Install relevant Packages:
 
 Switch to the home directory (One level above the **fronend** and **backend** folder).
 
 Open Terminal, type:
 
-`npm install express cors mongoose faker @faker-js/faker dotenv axios`
+`npm install express cors mongoose axios faker @faker-js/faker dotenv`
 
 ### 2-Run the server:
 
