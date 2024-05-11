@@ -11,13 +11,19 @@
 </head>
 <body>
     <div class = "app">
-        <h3>CRUD for Phone Contract</h3>
+        <h3>CRUD for Contract</h3>
         <table>
             <thead>
                 <tr>
                     <th>Contract ID</th>
-                    <th>Landlord List</th>
-                    <th>Tenant Basket</th>
+                    <th>Contract Date</th>
+                    <th>Property Address</th>
+                    <th>Landlord</th>
+                    <th>Tenants</th>
+                    <th>Monthly Fee(€)</th>
+                    <th>Door Number</th>
+                    <th>Contract Length</th>
+                    <th>Property Type</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -37,6 +43,39 @@
             </div>
             <div id = "tenantCheckbox">
                 <label>Tenant Basket:</label>
+            </div>
+            <div>
+                <label>Contract Date:<span style="color: red;">*</span></label>
+                <input type="date" name="contractDate" required>
+            </div>
+            <div>
+                <label>Monthly Fee (€):<span style="color: red;">*</span></label>
+                <input type="number" name="monthlyFee" required min="0" step="0.01">
+            </div>
+            <div>
+                <label>Door Number:<span style="color: red;">*</span></label>
+                <input type="text" name="doorNumber" required>
+            </div>
+            <div>
+                <label>Contract Length:<span style="color: red;">*</span></label>
+                <select name="contractLength" required>
+                    <option value="Month">Month</option>
+                    <option value="Year">Year</option>
+                    <option value="Permanent">Permanent</option>
+                </select>
+            </div>
+            <div>
+                <label>Property Type:<span style="color: red;">*</span></label>
+                <select id="propertyTypeSelect" name="propertyType" onchange="togglePropertyTypeOther(this);">
+                    <option value="Apartment" selected>Apartment</option>
+                    <option value="Semi-Detached">Semi-Detached</option>
+                    <option value="Detached">Detached</option>    
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div id="propertyTypeOtherGroup" style="display:none;">
+                <label>Property Type Other:</label>
+                <input type="text" name="propertyTypeOther">
             </div>
             <!-- Button Controller -->
             <div>

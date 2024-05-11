@@ -1,3 +1,15 @@
+function togglePropertyTypeOther(input) {
+    const propertyTypeOtherGroup = document.getElementById('propertyTypeOtherGroup');
+    let propertyTypeValue = (input instanceof Element)? input.value : input;
+    
+    if(propertyTypeValue == 'Other'){
+        propertyTypeOtherGroup.style.display = 'block';
+    } else {
+        propertyTypeOtherGroup.style.display = 'none';
+        document.querySelector('input[name="propertyTypeOther"]').value = '';
+    }
+}
+
 // Function to fetch landlords and render as radios
 function fetchAllLandlords() {
     axios.get('http://localhost:5000/landlords/get')
@@ -58,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var currentEditingContractId = null; // Make sure to edit only one contract
 
 
-    // [Path 1 -- Create] -- Generate Random Contract - 'http://localhost:5000/contracts/generate-contract'
+    // [Path 1 -- Get] -- Generate Random Contract - 'http://localhost:5000/contracts/generate-contract'
     document.getElementById('generateRandomContract').addEventListener('click', () => {  
         // Randomly check 1 Radio
         const radios = document.querySelectorAll('input[name="landlordID"]');
@@ -79,6 +91,40 @@ document.addEventListener('DOMContentLoaded', function() {
             const shuffled = checkboxes.sort(() => 0.5 - Math.random()); 
             shuffled.slice(0, countToCheck).forEach(checkbox => checkbox.checked = true); 
         }
+
+        // Fetch random generated other fields
+        axios.get(`http://localhost:5000/contracts/generate-contract`)
+        .then(response => {
+            const contractData = response.data;
+            console.log("Generate a Contract", contractData);         
+            
+            // Fill the <form> with fetched Contract
+            let contractForm = document.getElementById('contractForm');
+            Object.keys(contractData).forEach(key => {
+                const element = contractForm.elements[key];  
+
+                if(element instanceof NodeList){
+                    if(element[0]?.type === 'checkbox'){
+                        const checkboxValues = contractData[key].map(item => item._id);
+                        document.querySelectorAll(`input[name="${key}"]`).forEach(checkbox => {
+                            checkbox.checked = checkboxValues.includes(checkbox.value);
+                        });
+                    } else if (element[0]?.type === 'radio'){
+                        const radioValue = contractData[key]._id;
+                        document.querySelectorAll(`input[name="${key}"]`).forEach(radio => {
+                            radio.checked = (radioValue === radio.value);
+                        });
+                    }    
+                } else if (element.type === 'date') {
+                    const date = new Date(contractData[key]);
+                    element.value = date.toISOString().split('T')[0]; // "yyyy-MM-dd"                                           
+                } else {
+                    element.value = contractData[key];
+                }     
+            });
+            togglePropertyTypeOther(contractData.propertyType);  
+        })
+        .catch(error => console.error(error.message));     
     });
 
     // [Path 2 - Get] -- Get all Contracts - 'http://localhost:5000/contracts/get'
@@ -89,6 +135,9 @@ document.addEventListener('DOMContentLoaded', function() {
             contractList.innerHTML = ''; // Clear Contract Table
             
             response.data.forEach(currentContract => {   
+                const propertyTypeDisplay = currentContract.propertyType === 'Other' ?
+                currentContract.propertyTypeOther : currentContract.propertyType;
+
                 const landlordFullName = currentContract.landlordID.firstName + " " + currentContract.landlordID.surName;
                 const tenantsNameList = currentContract.tenantBasket.map(
                     tenant => tenant.firstName + " " + tenant.surName
@@ -97,8 +146,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${currentContract._id.toString()}</td> 
+                    <td>
+                        <a href="../address/addressForm.html" onclick="showAddressTable('${currentContract._id.toString()}', 'Property');">
+                            Property Address
+                        </a>
+                    </td>
+                    <td>${currentContract.contractDate.toString().split('T')[0]}</td>
                     <td>${landlordFullName}</td>  
                     <td>${tenantsNameList}</td>
+                    <td>${currentContract.monthlyFee}</td>
+                    <td>${currentContract.doorNumber}</td>
+                    <td>${currentContract.contractLength}</td>
+                    <td>${propertyTypeDisplay}</td>
                     <td>
                         <a href="#" onclick="editContract('${currentContract._id.toString()}')">edit</a> / 
                         <a href="#" onclick="deleteContract('${currentContract._id.toString()}')">delete</a>
@@ -177,6 +236,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             radio.checked = (radioValue === radio.value);
                         });
                     }                                                 
+                } else if (element.type === 'date') {
+                    const date = new Date(contractData[key]);
+                    element.value = date.toISOString().split('T')[0]; // "yyyy-MM-dd"
                 } else {
                     element.value = contractData[key];
                 }     
@@ -237,4 +299,11 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error(error.message));
     };
+
+    // Add items into LocalStorage
+    window.showAddressTable = function(refID, addressType) {
+        addressType = 'Property';
+        localStorage.setItem("refID", refID);
+        localStorage.setItem("addressType", addressType);
+    }  
 }); // End of Load Page

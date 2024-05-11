@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${currentTenant.phoneNumber}</td>
                     <td>${currentTenant.email}</td>
                     <td>
-                        <a href="./addressForm.html" onclick="showAddressTable('${currentTenant._id.toString()}', 'tenant');">
-                            Address
+                        <a href="./addressForm.html" onclick="showAddressTable('${currentTenant._id.toString()}', 'Tenant');">
+                            Tenant Address
                         </a>
                     </td>
                     <td>

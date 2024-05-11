@@ -14,7 +14,7 @@ const addressSchema = new Schema({
   },
   addressType: {
     type: String,
-    enum: ['tenant', 'landlord', 'Property'],
+    enum: ['Tenant', 'Landlord', 'Property'],
     required: true
   },
   addressLine1: {
