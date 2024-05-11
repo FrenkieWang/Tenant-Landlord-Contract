@@ -43,7 +43,7 @@ const landlordSchema = new Schema({
 }, { collection: 'Landlord' });
 
 landlordSchema.pre('validate', function(next) {
-  if (this.title === 'Other' && !this.titleOther) {
+  if (!this.titleOther && this.title === 'Other') {
     this.invalidate('titleOther', 'Title must be specified if "Other" is selected');
   }
   next();

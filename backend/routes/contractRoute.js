@@ -1,7 +1,6 @@
 const router = require('express').Router();
 let Contract = require('../models/contractModel');
 
-/*
 const generateRandomContract = require('./faker/fakerContract'); 
 
 router.route('/generate-contract').get((request, response) => {
@@ -9,7 +8,7 @@ router.route('/generate-contract').get((request, response) => {
   console.log(contract);
   response.json(contract);
 });
-*/
+
 
 router.route('/get').get((request, response) => {
   Contract.find()
