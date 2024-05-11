@@ -246,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     element.value = contractData[key];
                 }     
             });
+            togglePropertyTypeOther(contractData.propertyType);  
         
             // Enable edit <button>, disable create <button>
             document.getElementById('editContractButton').disabled = false;
