@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addressArray.forEach(currentAddress => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${currentAddress.tenantID}</td>
+                    <td>${currentAddress.userID}</td>
                     <td>${currentAddress._id.toString()}</td>
                     <td>${currentAddress.addressType}</td>
                     <td>${currentAddress.addressLine1} &nbsp; ${currentAddress.addressLine2 || ''}</td>

@@ -16,7 +16,7 @@ const tenantSchema = new Schema({
     type: String,
     required: true  
   },
-  mobile: {  
+  phoneNumber: {  
     type: String,
     required: true  
   },

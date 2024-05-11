@@ -8,7 +8,7 @@ function generateRandomTenant() {
     titleOther: thisTitle === 'Other' ? faker.lorem.word() : '',
     firstName: faker.person.firstName(),
     surName: faker.person.lastName(),
-    mobile: faker.string.numeric(10, { allowLeadingZeros: true }),
+    phoneNumber: faker.string.numeric(10, { allowLeadingZeros: true }),
     email: faker.internet.email(),
   };
 

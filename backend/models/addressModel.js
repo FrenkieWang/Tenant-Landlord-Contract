@@ -2,14 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const addressSchema = new Schema({
-  tenantID: { 
+  userID: { 
     type: Schema.Types.ObjectId, 
-    ref: 'Tenant', 
+    refPath: 'modelRef', 
     required: true 
+  },
+  modelRef: {
+    type: String,
+    enum: ['Tenant', 'Landlord'],  
+    required: true,
   },
   addressType: {
     type: String,
-    enum: ['home', 'shipping'],
+    enum: ['tenant', 'landlord'],
     required: true
   },
   addressLine1: {

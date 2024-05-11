@@ -58,16 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${titleDisplay}</td>
                     <td>${currentTenant.firstName}</td>
                     <td>${currentTenant.surName}</td>
-                    <td>${currentTenant.mobile}</td>
+                    <td>${currentTenant.phoneNumber}</td>
                     <td>${currentTenant.email}</td>
                     <td>
-                        <a href="./addressForm.html" onclick="showAddressTable('${currentTenant._id.toString()}', 'home');">
-                            Home Address
-                        </a>
-                    </td>
-                    <td>
-                        <a href="./addressForm.html" onclick="showAddressTable('${currentTenant._id.toString()}', 'shipping');">
-                            Shipping Address
+                        <a href="./addressForm.html" onclick="showAddressTable('${currentTenant._id.toString()}', 'tenant');">
+                            Address
                         </a>
                     </td>
                     <td>
