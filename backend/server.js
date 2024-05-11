@@ -17,12 +17,12 @@ connection.once('open', () => {
 // Configure Express Router
 const tenantRouter = require('./routes/tenantRoute');
 const addressRouter = require('./routes/addressRoute');
-// const phoneRouter = require('./routes/phoneRoute');
+const landlordRouter = require('./routes/landlordRoute');
 // const orderRouter = require('./routes/orderRoute');
 
 app.use('/tenants', tenantRouter);
 app.use('/users/addresses', addressRouter);
-// app.use('/phones', phoneRouter);
+app.use('/landlords', landlordRouter);
 // app.use('/orders', orderRouter);
 
 // Listen to the Port

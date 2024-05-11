@@ -12,143 +12,166 @@ function toggleTitleOther(input) {
 
 document.addEventListener('DOMContentLoaded', () => {  
     // Clear items in LocalStorage.
-    localStorage.removeItem('tenantID');
+    localStorage.removeItem('landlordID');
     localStorage.removeItem('addressType');
 
-    var currentEditingTenantID = null; // Make sure to edit only one tenant
-    refreshTenants(); // Refresh Tenants when browser loaded
+    var currentEditingLandlordID = null; // Make sure to edit only one landlord
+    refreshLandlords(); // Refresh Landlords when browser loaded
 
         
-    // [Path 1] GET -- Generate Random Tenant - 'http://localhost:5000/tenants/generate-tenant'
-    document.getElementById('generateRandomTenant').addEventListener('click', (event) => {  
+    // [Path 1] GET -- Generate Random Landlord - 'http://localhost:5000/landlords/generate-landlord'
+    document.getElementById('generateRandomLandlord').addEventListener('click', (event) => {  
         event.preventDefault(); 
 
-        axios.get(`http://localhost:5000/tenants/generate-tenant`)
+        axios.get(`http://localhost:5000/landlords/generate-landlord`)
         .then(response => {
-            const tenantData = response.data;
-            console.log("Generate a Tenant", tenantData); 
+            const landlordData = response.data;
+            console.log("Generate a Landlord", landlordData); 
             
-            // Fill the <form> with fetched Tenant
-            let tenantForm = document.getElementById('tenantForm');
-            Object.keys(tenantData).forEach(key => {
-                tenantForm.elements[key].value = tenantData[key];                       
+            // Fill the <form> with fetched Landlord
+            let landlordForm = document.getElementById('landlordForm');
+            Object.keys(landlordData).forEach(key => {
+                const element = landlordForm.elements[key];
+
+                if (element.type === 'date') {
+                    const date = new Date(landlordData[key]);
+                    element.value = date.toISOString().split('T')[0]; // "yyyy-MM-dd"
+                } else if (element.type === 'radio') {
+                    const radios = document.querySelectorAll(`input[name="${key}"]`);
+                    radios.forEach(radio => radio.checked = (radio.value === landlordData[key]));
+                } else {
+                    element.value = landlordData[key];
+                }                    
             });
-            toggleTitleOther(tenantData.title);   
+            toggleTitleOther(landlordData.title);   
         })
         .catch(error => console.error(error.message));  
     });
 
-    // [Path 2] GET - Get all Tenants - 'http://localhost:5000/tenants/get'
-    function refreshTenants() {
-        axios.get('http://localhost:5000/tenants/get')
+    // [Path 2] GET - Get all Landlords - 'http://localhost:5000/landlords/get'
+    function refreshLandlords() {
+        axios.get('http://localhost:5000/landlords/get')
         .then(response => {
-            const tenantList = document.getElementById('tenantList');
-            tenantList.innerHTML = '';  // Clear Tenant Table
+            const landlordList = document.getElementById('landlordList');
+            landlordList.innerHTML = '';  // Clear Landlord Table
 
-            // Create every Table Row in <tbody id="tenantList">
-            const tenantArray = response.data;
-            console.log(tenantArray);
-            tenantArray.forEach(currentTenant => {
-                const titleDisplay = currentTenant.title === 'Other' ?
-                currentTenant.titleOther : currentTenant.title;
+            // Create every Table Row in <tbody id="landlordList">
+            const landlordArray = response.data;
+            console.log(landlordArray);
+            landlordArray.forEach(currentLandlord => {
+                const titleDisplay = currentLandlord.title === 'Other' ?
+                currentLandlord.titleOther : currentLandlord.title;
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${currentTenant._id.toString()}</td>
+                    <td>${currentLandlord._id.toString()}</td>
                     <td>${titleDisplay}</td>
-                    <td>${currentTenant.firstName}</td>
-                    <td>${currentTenant.surName}</td>
-                    <td>${currentTenant.phoneNumber}</td>
-                    <td>${currentTenant.email}</td>
+                    <td>${currentLandlord.firstName}</td>
+                    <td>${currentLandlord.surName}</td>
+                    <td>${currentLandlord.phoneNumber}</td>
+                    <td>${currentLandlord.email}</td>
                     <td>
-                        <a href="./addressForm.html" onclick="showAddressTable('${currentTenant._id.toString()}', 'tenant');">
+                        <a href="./addressForm.html" onclick="showAddressTable('${currentLandlord._id.toString()}', 'landlord');">
                             Address
                         </a>
                     </td>
+                    <td>${currentLandlord.dateOfBirth.toString().split('T')[0]}</td>
+                    <td>${currentLandlord.rentPermit}</td>
+                    <td>${currentLandlord.contactViaEmail}</td>
                     <td>
-                        <a href="#" onclick="editTenant('${currentTenant._id.toString()}')">edit</a> / 
-                        <a href="#" onclick="deleteTenant('${currentTenant._id.toString()}');">delete</a>
+                        <a href="#" onclick="editLandlord('${currentLandlord._id.toString()}')">edit</a> / 
+                        <a href="#" onclick="deleteLandlord('${currentLandlord._id.toString()}');">delete</a>
                     </td>
                 `;
-                tenantList.appendChild(tr);
+                landlordList.appendChild(tr);
             });
         })
         .catch(error => console.error(error.message));        
     }
 
-    // [Path 3] POST - Create a Tenant - 'http://localhost:5000/tenants/create'
-    document.getElementById('createTenantButton').addEventListener('click', (event) => {
+    // [Path 3] POST - Create a Landlord - 'http://localhost:5000/landlords/create'
+    document.getElementById('createLandlordButton').addEventListener('click', (event) => {
         event.preventDefault(); 
 
-        // Populate `tenant` Object with the content of <form>
-        let tenantForm = document.getElementById('tenantForm');
-        var formData = new FormData(tenantForm);
-        var tenant = {};         
-        formData.forEach((value, name) => tenant[name] = value); 
+        // Populate `landlord` Object with the content of <form>
+        let landlordForm = document.getElementById('landlordForm');
+        var formData = new FormData(landlordForm);
+        var landlord = {};         
+        formData.forEach((value, name) => landlord[name] = value); 
 
-        axios.post('http://localhost:5000/tenants/create', tenant)
+        axios.post('http://localhost:5000/landlords/create', landlord)
         .then(response => {
-            refreshTenants(); // Refresh <table> after CREATE
-            console.log(response.data, tenant);
-            tenantForm.reset(); // Clear the Form
+            refreshLandlords(); // Refresh <table> after CREATE
+            console.log(response.data, landlord);
+            landlordForm.reset(); // Clear the Form
         })
         .catch(error => console.error(error.message));
     });  
 
-    // [Path 4] GET - Get a Tenant - 'http://localhost:5000/tenants/get/:tenantID'
-    window.editTenant = function(tenantID) {       
-        currentEditingTenantID = tenantID;  // Change current Editing TenantID   
+    // [Path 4] GET - Get a Landlord - 'http://localhost:5000/landlords/get/:landlordID'
+    window.editLandlord = function(landlordID) {       
+        currentEditingLandlordID = landlordID;  // Change current Editing LandlordID   
 
-        axios.get(`http://localhost:5000/tenants/get/${tenantID}`)
+        axios.get(`http://localhost:5000/landlords/get/${landlordID}`)
         .then(response => {
-            console.log("Get this Tenant", response.data); 
-            let tenantData = {...response.data}; // light copy, avoid changing the original data
-            delete tenantData._id; 
-            delete tenantData.__v; 
+            console.log("Get this Landlord", response.data); 
+            let landlordData = {...response.data}; // light copy, avoid changing the original data
+            delete landlordData._id; 
+            delete landlordData.__v; 
         
-            // Fill the <form> with fetched Tenant
-            let tenantForm = document.getElementById('tenantForm');
-            Object.keys(tenantData).forEach(key => {
-                tenantForm.elements[key].value = tenantData[key];                         
+            // Fill the <form> with fetched Landlord
+            let landlordForm = document.getElementById('landlordForm');
+            Object.keys(landlordData).forEach(key => {
+                const element = landlordForm.elements[key];
+
+                if (element.type === 'date') {
+                    const date = new Date(landlordData[key]);
+                    element.value = date.toISOString().split('T')[0]; // "yyyy-MM-dd"
+                } else if (element.type === 'radio') {
+                    const radios = document.querySelectorAll(`input[name="${key}"]`);
+                    radios.forEach(radio => radio.checked = (radio.value === landlordData[key]));
+                } else {
+                    element.value = landlordData[key];
+                }                    
             });
-            toggleTitleOther(tenantForm.title);
+            toggleTitleOther(landlordForm.title);
 
             // Enable edit <button>, disable create <button>
-            document.getElementById('editTenantButton').disabled = false;
-            document.getElementById('createTenantButton').disabled = true;
+            document.getElementById('editLandlordButton').disabled = false;
+            document.getElementById('createLandlordButton').disabled = true;
         })
         .catch(error => console.error(error.message));  
     };
 
-    // [Path 5] PUT - Update a Tenant - 'http://localhost:5000/tenants/update/:tenantID'
-    document.getElementById('editTenantButton').addEventListener('click', (event) => {
+    // [Path 5] PUT - Update a Landlord - 'http://localhost:5000/landlords/update/:landlordID'
+    document.getElementById('editLandlordButton').addEventListener('click', (event) => {
         event.preventDefault();
 
-        // Populate `tenant` Object with the content of <form>
-        let tenantForm = document.getElementById('tenantForm');
-        var formData = new FormData(tenantForm);
-        var tenant = {};
-        formData.forEach((value, name) => tenant[name] = value);
+        // Populate `landlord` Object with the content of <form>
+        let landlordForm = document.getElementById('landlordForm');
+        var formData = new FormData(landlordForm);
+        var landlord = {};
+        formData.forEach((value, name) => landlord[name] = value);
 
-        axios.put(`http://localhost:5000/tenants/update/${currentEditingTenantID}`, tenant)
+        axios.put(`http://localhost:5000/landlords/update/${currentEditingLandlordID}`, landlord)
         .then(response => {
-            refreshTenants(); // Refresh <table> after UPDATE
-            console.log(`Tenant: ${currentEditingTenantID} updated`, response.data);
-            tenantForm.reset(); // Clear the form
+            refreshLandlords(); // Refresh <table> after UPDATE
+            console.log(`Landlord: ${currentEditingLandlordID} updated`, response.data);
+            landlordForm.reset(); // Clear the form
     
             // Disable edit <button>, enable create <button>
-            document.getElementById('editTenantButton').disabled = true;
-            document.getElementById('createTenantButton').disabled = false;
+            document.getElementById('editLandlordButton').disabled = true;
+            document.getElementById('createLandlordButton').disabled = false;
         })
         .catch(error => console.error(error.message)); 
     });
 
-    // [Path 6] DELETE - Delete a Tenant - 'http://localhost:5000/tenants/delete/:tenantID'
-    window.deleteTenant = function(tenantID) {
-        axios.delete(`http://localhost:5000/tenants/delete/${tenantID}`)
+    // [Path 6] DELETE - Delete a Landlord - 'http://localhost:5000/landlords/delete/:landlordID'
+    window.deleteLandlord = function(landlordID) {
+        axios.delete(`http://localhost:5000/landlords/delete/${landlordID}`)
         .then(response => {
             console.log(response.data);
-            refreshTenants(); // Refresh the list after deleting
+            refreshLandlords(); // Refresh the list after deleting
         })
         .catch(error => console.error(error.message));
     };  

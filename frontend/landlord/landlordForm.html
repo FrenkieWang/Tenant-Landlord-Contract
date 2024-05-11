@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tenant Management</title>
+    <title>Landlord Management</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -11,34 +11,37 @@
 </head>
 <body>
     <div class = "app">
-        <h3>CRUD for Tenants</h3>
+        <h3>CRUD for Landlords</h3>
         <table>
             <thead>
                 <tr>
-                    <th>Tenant ID</th>
+                    <th>Landlord ID</th>
                     <th>Title</th>
                     <th>First Name</th>
                     <th>Sur Name</th>
                     <th>Phone Number</th>
                     <th>Email</th>
                     <th>Address</th>
+                    <th>Date of Birth</th>
+                    <th>Rent Permit</th>
+                    <th>Contact via Email</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="tenantList">
+            <tbody id="landlordList">
                 <!-- Table Body will be loaded here by JavaScript -->
             </tbody>
         </table>
         
-        <h3>Tenant Submit Form</h3>
+        <h3>Landlord Submit Form</h3>
         <div>
-            <button type="button" id="generateRandomTenant">Generate a Random Tenant</button>
+            <button type="button" id="generateRandomLandlord">Generate a Random Landlord</button>
         </div>  
-        <form id="tenantForm">
+        <form id="landlordForm">
             <!-- Input Item -->
             <div>
                 <label>Title:<span style="color: red;">*</span></label>
-                <select id="TenantTitleSelect" name="title" onchange="toggleTitleOther(this);">
+                <select id="LandlordTitleSelect" name="title" onchange="toggleTitleOther(this);">
                     <option value="Mx" selected>Mx</option>
                     <option value="Ms">Ms</option>
                     <option value="Mr">Mr</option>
@@ -68,17 +71,40 @@
                 <label>Email:<span style="color: red;">*</span></label>
                 <input type="email" name="email" required>
             </div>
-            <!-- Button Controller -->
+            <!-- Landlord - Additional Personal Details -->
             <div>
-                <button type="button" id="createTenantButton">Create Tenant</button>
+                <label>Date of Birth:<span style="color: red;">*</span></label>
+                <input type="date" name="dateOfBirth" required>
             </div>
             <div>
-                <button type="button" id="editTenantButton" disabled>Edit Tenant</button>
+                <label>Rent Permit (Y/N):<span style="color: red;">*</span></label>
+                <div>
+                    <input type="radio" id="rentPermitYes" name="rentPermit" value="Y">
+                    <label for="rentPermitYes">Yes</label>
+                    <input type="radio" id="rentPermitNo" name="rentPermit" value="N" checked>
+                    <label for="rentPermitNo">No</label>
+                </div>
+            </div>
+            <div>
+                <label>Contact via Email (Y/N):<span style="color: red;">*</span></label>
+                <div>
+                    <input type="radio" id="contactEmailYes" name="contactViaEmail" value="Y">
+                    <label for="contactEmailYes">Yes</label>
+                    <input type="radio" id="contactEmailNo" name="contactViaEmail" value="N" checked>
+                    <label for="contactEmailNo">No</label>
+                </div>
+            </div>            
+            <!-- Button Controller -->
+            <div>
+                <button type="button" id="createLandlordButton">Create Landlord</button>
+            </div>
+            <div>
+                <button type="button" id="editLandlordButton" disabled>Edit Landlord</button>
             </div>  
         </form>           
     </div> <!-- END of APP -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="tenantForm.js"></script>
+    <script src="landlordForm.js"></script>
 </body>
 </html>
