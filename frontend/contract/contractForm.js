@@ -1,50 +1,50 @@
-// Function to fetch tenants and render as radios
-function fetchAllMembers() {
-    axios.get('http://localhost:5000/tenants/get')
+// Function to fetch landlords and render as radios
+function fetchAllLandlords() {
+    axios.get('http://localhost:5000/landlords/get')
     .then(response => {
-        const RadioDiv = document.getElementById('tenantRadio');
+        const landlordRadioDiv = document.getElementById('landlordRadio');
 
-        response.data.forEach(tenant => {
+        response.data.forEach(landlord => {
             const radio = document.createElement('input');
             const label = document.createElement('label');
 
             radio.type = 'radio';
-            radio.name = 'tenantID'; 
-            radio.value = tenant._id.toString();
+            radio.name = 'landlordID'; 
+            radio.value = landlord._id.toString();
 
             label.htmlFor = radio.id;
-            label.textContent = tenant.firstName + " " + tenant.surName; 
+            label.textContent = landlord.firstName + " " + landlord.surName; 
 
             const container = document.createElement('div');
             container.appendChild(radio);
             container.appendChild(label);
-            tenantRadioDiv.appendChild(container);
+            landlordRadioDiv.appendChild(container);
         });
     })
     .catch(error => console.error(error));
 }
 
-// Function to fetch phones and render as checkboxes
-function fetchAllPhones() {
-    axios.get('http://localhost:5000/phones/get')
+// Function to fetch tenants and render as checkboxes
+function fetchAllTenants() {
+    axios.get('http://localhost:5000/tenants/get')
     .then(response => {
-        const phoneCheckboxDiv = document.getElementById('phoneCheckbox');
-        response.data.forEach(phone => {
+        const tenantCheckboxDiv = document.getElementById('tenantCheckbox');
+        response.data.forEach(tenant => {
             const checkbox = document.createElement('input');
             const label = document.createElement('label');
 
             checkbox.type = 'checkbox';
-            checkbox.name = 'phoneBasket';
-            checkbox.value = phone._id.toString();
-            checkbox.id = phone._id.toString();
+            checkbox.name = 'tenantBasket';
+            checkbox.value = tenant._id.toString();
+            checkbox.id = tenant._id.toString();
 
             label.htmlFor = checkbox.id;
-            label.textContent = phone.manufacturer + " " + phone.model; 
+            label.textContent = tenant.firstName + " " + tenant.surName; 
 
             const container = document.createElement('div');
             container.appendChild(checkbox);
             container.appendChild(label);
-            phoneCheckboxDiv.appendChild(container);
+            tenantCheckboxDiv.appendChild(container);
         });
     })
     .catch(error => console.error(error));
@@ -52,16 +52,16 @@ function fetchAllPhones() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    fetchAllMembers(); 
-    fetchAllPhones(); 
-    refreshOrders(); // Refresh <table> when Page loaded
-    var currentEditingOrderId = null; // Make sure to edit only one order
+    fetchAllLandlords(); 
+    fetchAllTenants(); 
+    refreshContracts(); // Refresh <table> when Page loaded
+    var currentEditingContractId = null; // Make sure to edit only one contract
 
 
-    // [Path 1 -- Create] -- Generate Random Phone - 'http://localhost:5000/phones/generate-phone'
-    document.getElementById('generateRandomPhone').addEventListener('click', () => {  
+    // [Path 1 -- Create] -- Generate Random Contract - 'http://localhost:5000/contracts/generate-contract'
+    document.getElementById('generateRandomContract').addEventListener('click', () => {  
         // Randomly check 1 Radio
-        const radios = document.querySelectorAll('input[name="tenantID"]');
+        const radios = document.querySelectorAll('input[name="landlordID"]');
         if (radios.length > 0) {
             const randomRadioIndex = Math.floor(Math.random() * radios.length);
             radios.forEach((radio, index) => {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Randomly check 1-3 Checkboxes
-        const checkboxes = Array.from(document.querySelectorAll('input[name="phoneBasket"]'));
+        const checkboxes = Array.from(document.querySelectorAll('input[name="tenantBasket"]'));
         if (checkboxes.length >= 1) {
             checkboxes.forEach(checkbox => checkbox.checked = false);    
             const countToCheck = Math.floor(Math.random() * Math.min(3, checkboxes.length)) + 1;
@@ -81,30 +81,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // [Path 2 - Get] -- Get all Orders - 'http://localhost:5000/orders/get'
-    function refreshOrders() {
-        axios.get('http://localhost:5000/orders/get')
+    // [Path 2 - Get] -- Get all Contracts - 'http://localhost:5000/contracts/get'
+    function refreshContracts() {
+        axios.get('http://localhost:5000/contracts/get')
         .then(response => {
-            const orderList = document.getElementById('orderList');
-            orderList.innerHTML = ''; // Clear Order Table
+            const contractList = document.getElementById('contractList');
+            contractList.innerHTML = ''; // Clear Contract Table
             
-            response.data.forEach(currentOrder => {   
-                const fullName = currentOrder.tenantID.firstName + " " + currentOrder.tenantID.surName;
-                const phones = currentOrder.phoneBasket.map(
-                    phone => phone.manufacturer + " " + phone.model
+            response.data.forEach(currentContract => {   
+                const landlordFullName = currentContract.landlordID.firstName + " " + currentContract.landlordID.surName;
+                const tenantsNameList = currentContract.tenantBasket.map(
+                    tenant => tenant.firstName + " " + tenant.surName
                 ).join(", ");
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${currentOrder._id.toString()}</td> 
-                    <td>${fullName}</td>  
-                    <td>${phones}</td>
+                    <td>${currentContract._id.toString()}</td> 
+                    <td>${landlordFullName}</td>  
+                    <td>${tenantsNameList}</td>
                     <td>
-                        <a href="#" onclick="editOrder('${currentOrder._id.toString()}')">edit</a> / 
-                        <a href="#" onclick="deleteOrder('${currentOrder._id.toString()}')">delete</a>
+                        <a href="#" onclick="editContract('${currentContract._id.toString()}')">edit</a> / 
+                        <a href="#" onclick="deleteContract('${currentContract._id.toString()}')">delete</a>
                     </td>
                 `;
-                orderList.appendChild(tr);
+                contractList.appendChild(tr);
             });
 
             // [Default] - Select first Radio
@@ -114,126 +114,126 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error(error.message));      
     }
 
-    // [Path 3 - POST] -- Create a Order - 'http://localhost:5000/orders/create'
-    document.getElementById('createOrderButton').addEventListener('click', (event) => {
+    // [Path 3 - POST] -- Create a Contract - 'http://localhost:5000/contracts/create'
+    document.getElementById('createContractButton').addEventListener('click', (event) => {
         event.preventDefault(); 
 
-        // Populate `order` Object with the content of <form>
-        let orderForm = document.getElementById('orderForm');
-        var order = {
-            phoneBasket : []
+        // Populate `contract` Object with the content of <form>
+        let contractForm = document.getElementById('contractForm');
+        var contract = {
+            tenantBasket : []
         };
-        Array.from(orderForm.elements).forEach(field => {
+        Array.from(contractForm.elements).forEach(field => {
             if (field.type === 'checkbox' && field.checked) {   
-                order.phoneBasket.push(field.value);                 
+                contract.tenantBasket.push(field.value);                 
             } else if (field.type === 'radio' && field.checked) {
-                order[field.name] = field.value;
+                contract[field.name] = field.value;
             }
             else if (field.type !== 'submit' && field.type !== 'checkbox' && field.type !== 'radio') {
-                order[field.name] = field.value;
+                contract[field.name] = field.value;
             }
         });
 
-        if (order.phoneBasket.length < 1) {
-            alert("Tenant must purchase at least one Phone!");
+        if (contract.tenantBasket.length < 1 || contract.tenantBasket.length > 3) {
+            alert("Contract can only have 1 to 3 Tenants!");
             return; // Prevent Submission
         }          
 
-        axios.post('http://localhost:5000/orders/create', order)
+        axios.post('http://localhost:5000/contracts/create', contract)
         .then(() => {
-            refreshOrders(); // Refresh <table> after CREATE
-            console.log(`Order created: `, order);
-            orderForm.reset(); // Clear the form
+            refreshContracts(); // Refresh <table> after CREATE
+            console.log(`Contract created: `, contract);
+            contractForm.reset(); // Clear the form
         })
         .catch(error => console.error(error.message));
     });      
 
 
-    // [Path 4 - GET] -- Get a Order - 'http://localhost:5000/orders/get/:orderId'
-    window.editOrder = function(orderId) {             
-        currentEditingOrderId = orderId;  // Change current Editing OrderId  
+    // [Path 4 - GET] -- Get a Contract - 'http://localhost:5000/contracts/get/:contractId'
+    window.editContract = function(contractId) {             
+        currentEditingContractId = contractId;  // Change current Editing ContractId  
 
-        axios.get(`http://localhost:5000/orders/get/${orderId}`)
+        axios.get(`http://localhost:5000/contracts/get/${contractId}`)
         .then(response => {
-            console.log("Get this Order", response.data); 
-            let orderData = {...response.data}; // light copy, avoid changing the original data
-            delete orderData._id; 
-            delete orderData.__v; 
+            console.log("Get this Contract", response.data); 
+            let contractData = {...response.data}; // light copy, avoid changing the original data
+            delete contractData._id; 
+            delete contractData.__v; 
         
-            // Fill the <form> with fetched Order
-            let orderForm = document.getElementById('orderForm');                 
-            Object.keys(orderData).forEach(key => {
-                const element = orderForm.elements[key];  
+            // Fill the <form> with fetched Contract
+            let contractForm = document.getElementById('contractForm');                 
+            Object.keys(contractData).forEach(key => {
+                const element = contractForm.elements[key];  
 
                 if(element instanceof NodeList){
                     if(element[0]?.type === 'checkbox'){
-                        const checkboxValues = orderData[key].map(item => item._id);
+                        const checkboxValues = contractData[key].map(item => item._id);
                         document.querySelectorAll(`input[name="${key}"]`).forEach(checkbox => {
                             checkbox.checked = checkboxValues.includes(checkbox.value);
                         });
                     } else if (element[0]?.type === 'radio'){
-                        const radioValue = orderData[key]._id;
+                        const radioValue = contractData[key]._id;
                         document.querySelectorAll(`input[name="${key}"]`).forEach(radio => {
                             radio.checked = (radioValue === radio.value);
                         });
                     }                                                 
                 } else {
-                    element.value = orderData[key];
+                    element.value = contractData[key];
                 }     
             });
         
             // Enable edit <button>, disable create <button>
-            document.getElementById('editOrderButton').disabled = false;
-            document.getElementById('createOrderButton').disabled = true;
+            document.getElementById('editContractButton').disabled = false;
+            document.getElementById('createContractButton').disabled = true;
         })
         .catch(error => console.error(error.message));      
     };
 
 
-    // [Path 5 - PUT] -- Update a Order - 'http://localhost:5000/orders/update/:orderId'
-    document.getElementById('editOrderButton').addEventListener('click',  (event) => {
+    // [Path 5 - PUT] -- Update a Contract - 'http://localhost:5000/contracts/update/:contractId'
+    document.getElementById('editContractButton').addEventListener('click',  (event) => {
         event.preventDefault();    
 
-        // Populate `order` Object with the content of <form>
-        let orderForm = document.getElementById('orderForm');
-        var order = {
-            phoneBasket : []
+        // Populate `contract` Object with the content of <form>
+        let contractForm = document.getElementById('contractForm');
+        var contract = {
+            tenantBasket : []
         };
-        Array.from(orderForm.elements).forEach(field => {
+        Array.from(contractForm.elements).forEach(field => {
             if (field.type === 'checkbox' && field.checked) {   
-                order.phoneBasket.push(field.value);                 
+                contract.tenantBasket.push(field.value);                 
             } else if (field.type === 'radio' && field.checked) {
-                order[field.name] = field.value;
+                contract[field.name] = field.value;
             }
             else if (field.type !== 'submit' && field.type !== 'checkbox' && field.type !== 'radio') {
-                order[field.name] = field.value;
+                contract[field.name] = field.value;
             }
         });
 
-        if (order.phoneBasket.length < 1) {
-            alert("Tenant must purchase at least one Phone!");
+        if (contract.tenantBasket.length < 1) {
+            alert("Tenant must purchase at least one Tenant!");
             return; // Prevent Submission
         }    
 
-        axios.put(`http://localhost:5000/orders/update/${currentEditingOrderId}`, order)
+        axios.put(`http://localhost:5000/contracts/update/${currentEditingContractId}`, contract)
         .then((response) => {
-            refreshOrders(); // Refresh <table> after UPDATE
-            console.log(`Order: ${currentEditingOrderId} updated`, response.data);
-            orderForm.reset(); // Clear the form
+            refreshContracts(); // Refresh <table> after UPDATE
+            console.log(`Contract: ${currentEditingContractId} updated`, response.data);
+            contractForm.reset(); // Clear the form
     
             // Disable edit <button>, enable create <button>
-            document.getElementById('editOrderButton').disabled = true;
-            document.getElementById('createOrderButton').disabled = false;
+            document.getElementById('editContractButton').disabled = true;
+            document.getElementById('createContractButton').disabled = false;
         })
         .catch(error => console.error(error.message));     
     });
 
-    // [Path 6 -- DELETE] -- Delete a Order - 'http://localhost:5000/orders/delete/:modulId'
-    window.deleteOrder = function(orderId) {             
-        axios.delete(`http://localhost:5000/orders/delete/${orderId}`)
+    // [Path 6 -- DELETE] -- Delete a Contract - 'http://localhost:5000/contracts/delete/:modulId'
+    window.deleteContract = function(contractId) {             
+        axios.delete(`http://localhost:5000/contracts/delete/${contractId}`)
         .then(() => {
-            console.log(`Order: ${orderId} deleted successfully`);
-            refreshOrders(); // Refresh the list after deleting
+            console.log(`Contract: ${contractId} deleted successfully`);
+            refreshContracts(); // Refresh the list after deleting
         })
         .catch(error => console.error(error.message));
     };

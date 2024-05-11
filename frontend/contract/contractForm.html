@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Order Management</title>
+    <title>Contract Management</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -11,44 +11,44 @@
 </head>
 <body>
     <div class = "app">
-        <h3>CRUD for Phone Order</h3>
+        <h3>CRUD for Phone Contract</h3>
         <table>
             <thead>
                 <tr>
-                    <th>Order ID</th>
-                    <th>Tenant ID</th>
-                    <th>Phone Basket</th>
+                    <th>Contract ID</th>
+                    <th>Landlord List</th>
+                    <th>Tenant Basket</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="orderList">
+            <tbody id="contractList">
                 <!-- Table Body will be loaded here by JavaScript -->
             </tbody>
         </table>
 
-        <h3>Order Submit Form</h3>
+        <h3>Contract Submit Form</h3>
         <div>
-            <button type="button" id="generateRandomPhone">Generate a Random Phone</button>
+            <button type="button" id="generateRandomContract">Generate a Random Contract</button>
         </div>  
-        <form id="orderForm">
+        <form id="contractForm">
             <!-- Input Item -->
-            <div id = "tenantRadio">
-                <label>Tenant List:</label>
+            <div id = "landlordRadio">
+                <label>Landlord List:</label>
             </div>
-            <div id = "phoneCheckbox">
-                <label>Phone Basket:</label>
+            <div id = "tenantCheckbox">
+                <label>Tenant Basket:</label>
             </div>
             <!-- Button Controller -->
             <div>
-                <button type="button" id="createOrderButton">Create Order</button>
+                <button type="button" id="createContractButton">Create Contract</button>
             </div>
             <div>
-                <button type="button" id="editOrderButton" disabled>Edit Order</button>
+                <button type="button" id="editContractButton" disabled>Edit Contract</button>
             </div>  
         </form>       
     </div> <!-- END of APP -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./orderForm.js"></script>
+    <script src="./contractForm.js"></script>
 </body>
 </html>

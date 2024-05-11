@@ -1,56 +1,56 @@
 const router = require('express').Router();
-let Order = require('../models/orderModel');
+let Contract = require('../models/contractModel');
 
 /*
-const generateRandomOrder = require('./faker/fakerOrder'); 
+const generateRandomContract = require('./faker/fakerContract'); 
 
-router.route('/generate-order').get((request, response) => {
-  const order = generateRandomOrder(); 
-  console.log(order);
-  response.json(order);
+router.route('/generate-contract').get((request, response) => {
+  const contract = generateRandomContract(); 
+  console.log(contract);
+  response.json(contract);
 });
 */
 
 router.route('/get').get((request, response) => {
-  Order.find()
-    .populate('tenantID', 'firstName surName')  
+  Contract.find()
+    .populate('landlordID', 'firstName surName')  
     .populate({
-      path: 'phoneBasket',
-      select: 'manufacturer model'  
+      path: 'tenantBasket',
+      select: 'firstName surName'  
     })
-    .then(orders => response.json(orders))
+    .then(contracts => response.json(contracts))
     .catch(error => response.status(400).json(error));
 });
 
 router.route('/create').post((request, response) => {
-  const newOrder = new Order(request.body);
+  const newContract = new Contract(request.body);
 
-  newOrder.save()
-    .then(() => response.json('Order added!'))
+  newContract.save()
+    .then(() => response.json('Contract added!'))
     .catch(error => response.status(400).json(error));
 });
 
 router.route('/get/:id').get((request, response) => {
-  Order.findById(request.params.id)
-    .populate('tenantID', 'firstName surName')  
+  Contract.findById(request.params.id)
+    .populate('landlordID', 'firstName surName')  
     .populate({
-      path: 'phoneBasket',
-      select: 'manufacturer model'  
+      path: 'tenantBasket',
+      select: 'firstName surName'  
     })
-    .then(order => response.json(order))
+    .then(contract => response.json(contract))
     .catch(error => response.status(400).json(error));
 });
 
 router.route('/delete/:id').delete((request, response) => {
-  Order.findByIdAndDelete(request.params.id)
-    .then(() => response.json('Order deleted.'))
+  Contract.findByIdAndDelete(request.params.id)
+    .then(() => response.json('Contract deleted.'))
     .catch(error => response.status(400).json(error));
 });
 
 router.route('/update/:id').put((request, response) => {
-  Order.findByIdAndUpdate(request.params.id,
+  Contract.findByIdAndUpdate(request.params.id,
     request.body, { new: true, runValidators: true })
-      .then(order => response.json(order))
+      .then(contract => response.json(contract))
       .catch(error => response.status(400).json(error));
 });
 

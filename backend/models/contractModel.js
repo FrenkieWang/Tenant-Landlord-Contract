@@ -2,25 +2,25 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const orderSchema = new Schema({
-    tenantID: { 
+const contractSchema = new Schema({
+    landlordID: { 
       type: Schema.Types.ObjectId, 
-      ref: 'Tenant', 
+      ref: 'Landlord', 
       required: true 
     },
-    phoneBasket: [{ 
+    tenantBasket: [{ 
       type: Schema.Types.ObjectId, 
-      ref: 'Phone',
+      ref: 'Tenant',
       required: true,
     }]
-  }, { collection: 'Order' });
+  }, { collection: 'Contract' });
 
-orderSchema.pre('validate', function(next) {
-  if (!this.phoneBasket || this.phoneBasket.length < 1) {
-    this.invalidate('phoneBasket', 'Tenant must purchase at least one Phone!');
+contractSchema.pre('validate', function(next) {
+  if (!this.tenantBasket || this.tenantBasket.length < 1 || this.tenantBasket.length > 3) {
+    this.invalidate('tenantBasket', 'Contract can only have 1 to 3 Tenants!');
   }
   next();
 });
 
-const Order = mongoose.model('Order', orderSchema);
-module.exports = Order;
+const Contract = mongoose.model('Contract', contractSchema);
+module.exports = Contract;

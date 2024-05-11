@@ -18,12 +18,12 @@ connection.once('open', () => {
 const tenantRouter = require('./routes/tenantRoute');
 const addressRouter = require('./routes/addressRoute');
 const landlordRouter = require('./routes/landlordRoute');
-// const orderRouter = require('./routes/orderRoute');
+const contractRouter = require('./routes/contractRoute');
 
 app.use('/tenants', tenantRouter);
 app.use('/users/addresses', addressRouter);
 app.use('/landlords', landlordRouter);
-// app.use('/orders', orderRouter);
+app.use('/contracts', contractRouter);
 
 // Listen to the Port
 const port = process.env.PORT || 5000;
