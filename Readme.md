@@ -1,4 +1,7 @@
-# Detailed working (and tested) setup instructions
+# Tenant-Landlord-Contract
+
+
+## Detailed working (and tested) setup instructions
 
 ### 1-Install relevant Packages:
 
