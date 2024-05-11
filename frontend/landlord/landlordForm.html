@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tenant Management</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse; 
+        }
+    </style>
+</head>
+<body>
+    <div class = "app">
+        <h3>CRUD for Tenants</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tenant ID</th>
+                    <th>Title</th>
+                    <th>First Name</th>
+                    <th>Sur Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tenantList">
+                <!-- Table Body will be loaded here by JavaScript -->
+            </tbody>
+        </table>
+        
+        <h3>Tenant Submit Form</h3>
+        <div>
+            <button type="button" id="generateRandomTenant">Generate a Random Tenant</button>
+        </div>  
+        <form id="tenantForm">
+            <!-- Input Item -->
+            <div>
+                <label>Title:<span style="color: red;">*</span></label>
+                <select id="TenantTitleSelect" name="title" onchange="toggleTitleOther(this);">
+                    <option value="Mx" selected>Mx</option>
+                    <option value="Ms">Ms</option>
+                    <option value="Mr">Mr</option>
+                    <option value="Mrs">Mrs</option>
+                    <option value="Miss">Miss</option>
+                    <option value="Dr">Dr</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div id="titleOtherGroup" style="display:none;">
+                <label>Title Other:</label>
+                <input type="text" name="titleOther">
+            </div>
+            <div>
+                <label>First Name:<span style="color: red;">*</span></label>
+                <input type="text" name="firstName" required>
+            </div>
+            <div>
+                <label>Sur Name:<span style="color: red;">*</span></label>
+                <input type="text" name="surName" required>
+            </div>
+            <div>
+                <label>Phone Number:<span style="color: red;">*</span></label>
+                <input type="tel" name="phoneNumber" required>
+            </div>
+            <div>
+                <label>Email:<span style="color: red;">*</span></label>
+                <input type="email" name="email" required>
+            </div>
+            <!-- Button Controller -->
+            <div>
+                <button type="button" id="createTenantButton">Create Tenant</button>
+            </div>
+            <div>
+                <button type="button" id="editTenantButton" disabled>Edit Tenant</button>
+            </div>  
+        </form>           
+    </div> <!-- END of APP -->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="tenantForm.js"></script>
+</body>
+</html>
