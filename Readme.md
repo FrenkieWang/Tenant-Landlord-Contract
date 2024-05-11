@@ -25,8 +25,8 @@ Open Terminal, type:
 
 **node server.js**
 
-You can see **Server is running on port** and 
-**MongoDB database connected successfully!** in your console.
+You can see **"Server is running on port"** and 
+**"MongoDB database connected successfully"** in your console.
 
 ### 3-Open the Webpage:
 
