@@ -12,9 +12,14 @@ Open Terminal, type:
 
 `npm install dotenv express cors mongoose axios faker @faker-js/faker`
 
+You can see **package.json**, **package-lock.json** and **node_modules** 
+are installed in your home directory.
+
 ### 2-Run the server:
 
-Switch to **backend** folder
+Switch to **backend** folder:
+
+`cd backend`
 
 Open Terminal, type:
 
