@@ -1,11 +1,11 @@
 const router = require('express').Router();
 let Contract = require('../models/contractModel');
-
+let Address = require('../models/addressModel');
 const generateRandomContract = require('./faker/fakerContract'); 
 
 router.route('/generate-contract').get((request, response) => {
   const contract = generateRandomContract(); 
-  console.log(contract);
+  // console.log(contract);
   response.json(contract);
 });
 
@@ -29,8 +29,8 @@ router.route('/create').post((request, response) => {
     .catch(error => response.status(400).json(error));
 });
 
-router.route('/get/:id').get((request, response) => {
-  Contract.findById(request.params.id)
+router.route('/get/:contractID').get((request, response) => {
+  Contract.findById(request.params.contractID)
     .populate('landlordID', 'firstName surName')  
     .populate({
       path: 'tenantBasket',
@@ -40,17 +40,18 @@ router.route('/get/:id').get((request, response) => {
     .catch(error => response.status(400).json(error));
 });
 
-router.route('/delete/:id').delete((request, response) => {
-  Contract.findByIdAndDelete(request.params.id)
-    .then(() => response.json('Contract deleted.'))
-    .catch(error => response.status(400).json(error));
-});
-
-router.route('/update/:id').put((request, response) => {
-  Contract.findByIdAndUpdate(request.params.id,
+router.route('/update/:contractID').put((request, response) => {
+  Contract.findByIdAndUpdate(request.params.contractID,
     request.body, { new: true, runValidators: true })
       .then(contract => response.json(contract))
       .catch(error => response.status(400).json(error));
+});
+
+router.route('/delete/:contractID').delete((request, response) => {
+  Contract.findByIdAndDelete(request.params.contractID)
+    .then(() => Address.deleteMany({ refID: request.params.contractID }))
+    .then(() => response.json(`Contract Property ${request.params.contractID} and its Address deleted.`))
+    .catch(error => response.status(400).json(error));
 });
 
 module.exports = router;

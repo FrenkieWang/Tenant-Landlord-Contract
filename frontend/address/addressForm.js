@@ -3,7 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentEditingUserID = localStorage.getItem("refID");
     const thisAddressType = localStorage.getItem("addressType");
 
-    document.getElementById('userAddressStatus').innerText = `CRUD for User(${currentEditingUserID})'s ${thisAddressType} Address`;
+    const linkName = thisAddressType === "Property" ? "Contract" : thisAddressType;
+    var goBackLink = document.getElementById("goBack");
+    goBackLink.href = `../${linkName.toLowerCase()}/${linkName.toLowerCase()}Form.html`;
+    goBackLink.textContent = `Back to ${linkName} List`;
+
+    document.getElementById('addressStatus').innerText = `CRUD for ${thisAddressType} (${currentEditingUserID})'s Address`;
     var currentEditingAddressID = null; // Make sure to edit only one addresss
     refreshAddresses();   // Refresh Addresses in refID 
 

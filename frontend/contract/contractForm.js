@@ -146,12 +146,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${currentContract._id.toString()}</td> 
+                    <td>${currentContract.contractDate.toString().split('T')[0]}</td>
                     <td>
                         <a href="../address/addressForm.html" onclick="showAddressTable('${currentContract._id.toString()}', 'Property');">
-                            Property Address
+                            Edit Address
                         </a>
                     </td>
-                    <td>${currentContract.contractDate.toString().split('T')[0]}</td>
                     <td>${landlordFullName}</td>  
                     <td>${tenantsNameList}</td>
                     <td>${currentContract.monthlyFee}</td>
