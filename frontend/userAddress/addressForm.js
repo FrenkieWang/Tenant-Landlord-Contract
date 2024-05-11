@@ -1,18 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {  
     // Get items from LocalStorage
-    const currentEditingUserID = localStorage.getItem("userID");
+    const currentEditingTenantID = localStorage.getItem("tenantID");
     const thisAddressType = localStorage.getItem("addressType");
 
-    document.getElementById('userAddressTitle').innerText = `CRUD for User(${currentEditingUserID})'s ${thisAddressType} Address`;
+    document.getElementById('tenantAddressTitle').innerText = `CRUD for Tenant(${currentEditingTenantID})'s ${thisAddressType} Address`;
     var currentEditingAddressID = null; // Make sure to edit only one addresss
-    refreshAddresses();   // Refresh Addresses in userID 
+    refreshAddresses();   // Refresh Addresses in tenantID 
 
 
-    // [Path 1] GET -- Generate Random User - 'http://localhost:5000/users/addresses/generate-address'
+    // [Path 1] GET -- Generate Random Tenant - 'http://localhost:5000/tenants/addresses/generate-address'
     document.getElementById('generateRandomAddress').addEventListener('click', (event) => {  
         event.preventDefault(); 
 
-        axios.get(`http://localhost:5000/users/addresses/generate-address`)
+        axios.get(`http://localhost:5000/tenants/addresses/generate-address`)
         .then(response => {
             const addressData = response.data;
             console.log("Generate a Address", addressData);         
@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));  
     });
 
-    // [Path 2] GET - Read all addresses for a specific user - 'http://localhost:5000/users/addresses/get/:userID/:addressType'
+    // [Path 2] GET - Read all addresses for a specific tenant - 'http://localhost:5000/tenants/addresses/get/:tenantID/:addressType'
     function refreshAddresses() {
-        axios.get(`http://localhost:5000/users/addresses/get/${currentEditingUserID}/${thisAddressType}`)
+        axios.get(`http://localhost:5000/tenants/addresses/get/${currentEditingTenantID}/${thisAddressType}`)
         .then(response => {
             const addressList = document.getElementById('addressList');
             addressList.innerHTML = '';  // Clear Address Table
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addressArray.forEach(currentAddress => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${currentAddress.userID}</td>
+                    <td>${currentAddress.tenantID}</td>
                     <td>${currentAddress._id.toString()}</td>
                     <td>${currentAddress.addressType}</td>
                     <td>${currentAddress.addressLine1} &nbsp; ${currentAddress.addressLine2 || ''}</td>
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));   
     }    
 
-    // [Path 3] POST - Create an address for a specific user - 'http://localhost:5000/users/addresses/create/:userID'
+    // [Path 3] POST - Create an address for a specific tenant - 'http://localhost:5000/tenants/addresses/create/:tenantID'
     document.getElementById('createAddressButton').addEventListener('click', (event) => {
         event.preventDefault();  
     
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.forEach((value, name) => address[name] = value);
         address.addressType = thisAddressType;
         
-        axios.post(`http://localhost:5000/users/addresses/create/${currentEditingUserID}`, address)
+        axios.post(`http://localhost:5000/tenants/addresses/create/${currentEditingTenantID}`, address)
         .then(response => {
             refreshAddresses(); // Refresh <table> after CREATE
             console.log(response.data, address);
@@ -79,16 +79,16 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));
     });
 
-    // [Path 4] GET - Read a specific address for a specific user - 'http://localhost:5000/users/addresses/get/:userID/:addressID'
+    // [Path 4] GET - Read a specific address for a specific tenant - 'http://localhost:5000/tenants/addresses/get/:tenantID/:addressID'
     window.editAddress = function (addressID) {     
         currentEditingAddressID = addressID;  // Change current Editing addressID
 
-        axios.get(`http://localhost:5000/users/addresses/getone/${currentEditingUserID}/${currentEditingAddressID}`)
+        axios.get(`http://localhost:5000/tenants/addresses/getone/${currentEditingTenantID}/${currentEditingAddressID}`)
         .then(response => {
             console.log("Get this Address", response.data); 
             let addressData = {...response.data}; // light copy, avoid changing the original data
             delete addressData._id; 
-            delete addressData.userID; 
+            delete addressData.tenantID; 
             delete addressData.addressType; 
             delete addressData.__v;  
 
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));
     }
 
-    // [Path 5] PUT - Update a specific address for a specific user - 'http://localhost:5000/users/addresses/update/:userID/:addressID'
+    // [Path 5] PUT - Update a specific address for a specific tenant - 'http://localhost:5000/tenants/addresses/update/:tenantID/:addressID'
     document.getElementById('editAddressButton').addEventListener('click',  (event) => {
         event.preventDefault();
 
@@ -116,10 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.forEach((value, name) => address[name] = value);
         address.addressType = thisAddressType;
         
-        axios.put(`http://localhost:5000/users/addresses/update/${currentEditingUserID}/${currentEditingAddressID}`, address)
+        axios.put(`http://localhost:5000/tenants/addresses/update/${currentEditingTenantID}/${currentEditingAddressID}`, address)
         .then(response => {
             refreshAddresses(); // Refresh <table> after CREATE
-            console.log(`Address: ${currentEditingAddressID} of User: ${currentEditingUserID} updated:`, response.data);
+            console.log(`Address: ${currentEditingAddressID} of Tenant: ${currentEditingTenantID} updated:`, response.data);
             addressForm.reset(); // Reset the form
 
             // Disable edit <button>
@@ -128,9 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message)); 
     });    
 
-    // [Path 6] DELETE - Delete a specific address for a specific user - '/users/:userID/addresses/delete/:addressID'   
+    // [Path 6] DELETE - Delete a specific address for a specific tenant - '/tenants/:tenantID/addresses/delete/:addressID'   
     window.deleteAddress = function(addressID) {
-        axios.delete(`http://localhost:5000/users/addresses/delete/${currentEditingUserID}/${addressID}`)
+        axios.delete(`http://localhost:5000/tenants/addresses/delete/${currentEditingTenantID}/${addressID}`)
         .then(response => {
             console.log(response.data);
             refreshAddresses(); // Refresh <table> after CREATE

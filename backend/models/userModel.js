@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const tenantSchema = new Schema({
   title: { 
     type: String, 
     enum: ['Mx', 'Ms', 'Mr', 'Mrs', 'Miss', 'Dr', 'Other']
@@ -24,14 +24,14 @@ const userSchema = new Schema({
     type: String,
     required: true  
   }
-}, { collection: 'User' });
+}, { collection: 'Tenant' });
 
-userSchema.pre('validate', function(next) {
+tenantSchema.pre('validate', function(next) {
   if (this.title === 'Other' && !this.titleOther) {
     this.invalidate('titleOther', 'Title must be specified if "Other" is selected');
   }
   next();
 });
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+const Tenant = mongoose.model('Tenant', tenantSchema);
+module.exports = Tenant;

@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
-    userID: { 
+    tenantID: { 
       type: Schema.Types.ObjectId, 
-      ref: 'User', 
+      ref: 'Tenant', 
       required: true 
     },
     phoneBasket: [{ 
@@ -17,7 +17,7 @@ const orderSchema = new Schema({
 
 orderSchema.pre('validate', function(next) {
   if (!this.phoneBasket || this.phoneBasket.length < 1) {
-    this.invalidate('phoneBasket', 'User must purchase at least one Phone!');
+    this.invalidate('phoneBasket', 'Tenant must purchase at least one Phone!');
   }
   next();
 });

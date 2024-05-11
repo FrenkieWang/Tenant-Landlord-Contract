@@ -1,24 +1,24 @@
-// Function to fetch users and render as radios
+// Function to fetch tenants and render as radios
 function fetchAllMembers() {
-    axios.get('http://localhost:5000/users/get')
+    axios.get('http://localhost:5000/tenants/get')
     .then(response => {
-        const userRadioDiv = document.getElementById('userRadio');
+        const RadioDiv = document.getElementById('tenantRadio');
 
-        response.data.forEach(user => {
+        response.data.forEach(tenant => {
             const radio = document.createElement('input');
             const label = document.createElement('label');
 
             radio.type = 'radio';
-            radio.name = 'userID'; 
-            radio.value = user._id.toString();
+            radio.name = 'tenantID'; 
+            radio.value = tenant._id.toString();
 
             label.htmlFor = radio.id;
-            label.textContent = user.firstName + " " + user.surName; 
+            label.textContent = tenant.firstName + " " + tenant.surName; 
 
             const container = document.createElement('div');
             container.appendChild(radio);
             container.appendChild(label);
-            userRadioDiv.appendChild(container);
+            tenantRadioDiv.appendChild(container);
         });
     })
     .catch(error => console.error(error));
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // [Path 1 -- Create] -- Generate Random Phone - 'http://localhost:5000/phones/generate-phone'
     document.getElementById('generateRandomPhone').addEventListener('click', () => {  
         // Randomly check 1 Radio
-        const radios = document.querySelectorAll('input[name="userID"]');
+        const radios = document.querySelectorAll('input[name="tenantID"]');
         if (radios.length > 0) {
             const randomRadioIndex = Math.floor(Math.random() * radios.length);
             radios.forEach((radio, index) => {
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
             orderList.innerHTML = ''; // Clear Order Table
             
             response.data.forEach(currentOrder => {   
-                const fullName = currentOrder.userID.firstName + " " + currentOrder.userID.surName;
+                const fullName = currentOrder.tenantID.firstName + " " + currentOrder.tenantID.surName;
                 const phones = currentOrder.phoneBasket.map(
                     phone => phone.manufacturer + " " + phone.model
                 ).join(", ");
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // [Default] - Select first Radio
-            const radios = document.querySelectorAll('input[name="userID"]');
+            const radios = document.querySelectorAll('input[name="tenantID"]');
             if (radios.length > 0) radios[0].checked = true;            
         })
         .catch(error => console.error(error.message));      
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (order.phoneBasket.length < 1) {
-            alert("User must purchase at least one Phone!");
+            alert("Tenant must purchase at least one Phone!");
             return; // Prevent Submission
         }          
 
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (order.phoneBasket.length < 1) {
-            alert("User must purchase at least one Phone!");
+            alert("Tenant must purchase at least one Phone!");
             return; // Prevent Submission
         }    
 

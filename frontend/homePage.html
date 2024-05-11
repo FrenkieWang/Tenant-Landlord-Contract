@@ -15,7 +15,7 @@
     <h3>Menu</h3>
     <nav>
         <ul>
-            <li><a href="./userAddress/userForm.html" target="contentFrame">User</a></li>
+            <li><a href="./tenant/tenantForm.html" target="contentFrame">Tenant</a></li>
             <li><a href="./phone/phoneForm.html" target="contentFrame">Phone</a></li>
             <li><a href="./order/orderForm.html" target="contentFrame">Order</a></li>
         </ul>
@@ -24,13 +24,13 @@
     <a href></a>
 
      <!-- src = Default Page -->
-    <iframe id="content" name="contentFrame" src="./userAddress/userForm.html"></iframe>
+    <iframe id="content" name="contentFrame" src="./tenant/tenantForm.html"></iframe>
 
     <script>
         // Add Query Parameter in addressForm.html
-        window.showAddressTable = function(userID, addressType) {
+        window.showAddressTable = function(tenantID, addressType) {
             var contentFrame = document.getElementById("content");
-            contentFrame.src  = 'addressForm.html?userID=' + userID 
+            contentFrame.src  = 'addressForm.html?tenantID=' + tenantID 
                 + '&addressType=' + addressType;  
         }  
     </script>

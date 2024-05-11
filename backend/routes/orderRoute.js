@@ -13,7 +13,7 @@ router.route('/generate-order').get((request, response) => {
 
 router.route('/get').get((request, response) => {
   Order.find()
-    .populate('userID', 'firstName surName')  
+    .populate('tenantID', 'firstName surName')  
     .populate({
       path: 'phoneBasket',
       select: 'manufacturer model'  
@@ -32,7 +32,7 @@ router.route('/create').post((request, response) => {
 
 router.route('/get/:id').get((request, response) => {
   Order.findById(request.params.id)
-    .populate('userID', 'firstName surName')  
+    .populate('tenantID', 'firstName surName')  
     .populate({
       path: 'phoneBasket',
       select: 'manufacturer model'  

@@ -1,9 +1,9 @@
 const { faker } = require('@faker-js/faker');
 
-function generateRandomUser() {
+function generateRandomTenant() {
   const thisTitle = faker.helpers.arrayElement(['Mx', 'Ms', 'Mr', 'Mrs', 'Miss', 'Dr', 'Other']);
 
-  const user = {
+  const tenant = {
     title: thisTitle,
     titleOther: thisTitle === 'Other' ? faker.lorem.word() : '',
     firstName: faker.person.firstName(),
@@ -12,7 +12,7 @@ function generateRandomUser() {
     email: faker.internet.email(),
   };
 
-  return user;
+  return tenant;
 }
 
-module.exports = generateRandomUser; 
+module.exports = generateRandomTenant; 

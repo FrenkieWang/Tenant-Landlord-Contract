@@ -1,47 +1,47 @@
 const router = require('express').Router();
-let User = require('../models/userModel');
+let Tenant = require('../models/tenantModel');
 let Address = require('../models/addressModel');
-const generateRandomUser = require('./faker/fakerUser'); 
+const generateRandomTenant = require('./faker/fakerTenant'); 
 
-router.route('/generate-user').get((request, response) => {
-  const user = generateRandomUser(); 
-  console.log(user);
-  response.json(user);
+router.route('/generate-tenant').get((request, response) => {
+  const tenant = generateRandomTenant(); 
+  console.log(tenant);
+  response.json(tenant);
 });
 
 router.route('/get').get((request, response) => {
-  User.find()
-    .then(users => response.json(users))
+  Tenant.find()
+    .then(tenants => response.json(tenants))
     .catch(error => response.status(400).json(error));
 });
 
 router.route('/create').post((request, response) => {
-  const newUser = new User(request.body);  
+  const newTenant = new Tenant(request.body);  
   
-  newUser.save()
-    .then(() => response.json('User added!'))
+  newTenant.save()
+    .then(() => response.json('Tenant added!'))
     .catch(error => response.status(400).json(error));
 });
 
-router.route('/get/:userID').get((request, response) => {
-  User.findById(request.params.userID)
-    .then(user => response.json(user))
+router.route('/get/:tenantID').get((request, response) => {
+  Tenant.findById(request.params.tenantID)
+    .then(tenant => response.json(tenant))
     .catch(error => response.status(400).json(error));
 });
 
-router.route('/update/:userID').put((request, response) => {
+router.route('/update/:tenantID').put((request, response) => {
   const updateData = request.body;
 
-  User.findByIdAndUpdate(request.params.userID,
+  Tenant.findByIdAndUpdate(request.params.tenantID,
     updateData, { new: true, runValidators: true })
-      .then(user => response.json(user))
+      .then(tenant => response.json(tenant))
       .catch(error => response.status(400).json(error));
 });
 
-router.route('/delete/:userID').delete((request, response) => {
-  User.findByIdAndDelete(request.params.userID)
-    .then(() => Address.deleteMany({ userID: request.params.userID }))
-    .then(() => response.json(`User ${request.params.userID} and its Address deleted.`))
+router.route('/delete/:tenantID').delete((request, response) => {
+  Tenant.findByIdAndDelete(request.params.tenantID)
+    .then(() => Address.deleteMany({ tenantID: request.params.tenantID }))
+    .then(() => response.json(`Tenant ${request.params.tenantID} and its Address deleted.`))
     .catch(error => response.status(400).json(error));
 });
 

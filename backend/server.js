@@ -15,15 +15,15 @@ connection.once('open', () => {
 })
 
 // Configure Express Router
-const userRouter = require('./routes/userRoute');
-const addressRouter = require('./routes/addressRoute');
-const phoneRouter = require('./routes/phoneRoute');
-const orderRouter = require('./routes/orderRoute');
+const tenantRouter = require('./routes/tenantRoute');
+// const addressRouter = require('./routes/addressRoute');
+// const phoneRouter = require('./routes/phoneRoute');
+// const orderRouter = require('./routes/orderRoute');
 
-app.use('/users', userRouter);
-app.use('/users/addresses', addressRouter);
-app.use('/phones', phoneRouter);
-app.use('/orders', orderRouter);
+app.use('/tenants', tenantRouter);
+// app.use('/tenants/addresses', addressRouter);
+// app.use('/phones', phoneRouter);
+// app.use('/orders', orderRouter);
 
 // Listen to the Port
 const port = process.env.PORT || 5000;

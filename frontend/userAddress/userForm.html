@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Management</title>
+    <title>Tenant Management</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -11,11 +11,11 @@
 </head>
 <body>
     <div class = "app">
-        <h3>CRUD for Users</h3>
+        <h3>CRUD for Tenants</h3>
         <table>
             <thead>
                 <tr>
-                    <th>User ID</th>
+                    <th>Tenant ID</th>
                     <th>Title</th>
                     <th>First Name</th>
                     <th>Sur Name</th>
@@ -26,20 +26,20 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="userList">
+            <tbody id="tenantList">
                 <!-- Table Body will be loaded here by JavaScript -->
             </tbody>
         </table>
         
-        <h3>User Submit Form</h3>
+        <h3>Tenant Submit Form</h3>
         <div>
-            <button type="button" id="generateRandomUser">Generate a Random User</button>
+            <button type="button" id="generateRandomTenant">Generate a Random Tenant</button>
         </div>  
-        <form id="userForm">
+        <form id="tenantForm">
             <!-- Input Item -->
             <div>
                 <label>Title:<span style="color: red;">*</span></label>
-                <select id="UserTitleSelect" name="title" onchange="toggleTitleOther(this);">
+                <select id="TenantTitleSelect" name="title" onchange="toggleTitleOther(this);">
                     <option value="Mx" selected>Mx</option>
                     <option value="Ms">Ms</option>
                     <option value="Mr">Mr</option>
@@ -71,15 +71,15 @@
             </div>
             <!-- Button Controller -->
             <div>
-                <button type="button" id="createUserButton">Create User</button>
+                <button type="button" id="createTenantButton">Create Tenant</button>
             </div>
             <div>
-                <button type="button" id="editUserButton" disabled>Edit User</button>
+                <button type="button" id="editTenantButton" disabled>Edit Tenant</button>
             </div>  
         </form>           
     </div> <!-- END of APP -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="userForm.js"></script>
+    <script src="tenantForm.js"></script>
 </body>
 </html>
