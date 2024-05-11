@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {  
     // Get items from LocalStorage
-    const currentEditingUserID = localStorage.getItem("userID");
+    const currentEditingUserID = localStorage.getItem("refID");
     const thisAddressType = localStorage.getItem("addressType");
 
     document.getElementById('userAddressStatus').innerText = `CRUD for User(${currentEditingUserID})'s ${thisAddressType} Address`;
     var currentEditingAddressID = null; // Make sure to edit only one addresss
-    refreshAddresses();   // Refresh Addresses in userID 
+    refreshAddresses();   // Refresh Addresses in refID 
 
 
     // [Path 1] GET -- Generate Random User - 'http://localhost:5000/users/addresses/generate-address'
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));  
     });
 
-    // [Path 2] GET - Read all addresses for a specific user - 'http://localhost:5000/users/addresses/get/:userID/:addressType'
+    // [Path 2] GET - Read all addresses for a specific user - 'http://localhost:5000/users/addresses/get/:refID/:addressType'
     function refreshAddresses() {
         axios.get(`http://localhost:5000/users/addresses/get/${currentEditingUserID}/${thisAddressType}`)
         .then(response => {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addressArray.forEach(currentAddress => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${currentAddress.userID}</td>
+                    <td>${currentAddress.refID}</td>
                     <td>${currentAddress._id.toString()}</td>
                     <td>${currentAddress.addressType}</td>
                     <td>${currentAddress.addressLine1} &nbsp; ${currentAddress.addressLine2 || ''}</td>
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));   
     }    
 
-    // [Path 3] POST - Create an address for a specific user - 'http://localhost:5000/users/addresses/create/:userID/:addressType'
+    // [Path 3] POST - Create an address for a specific user - 'http://localhost:5000/users/addresses/create/:refID/:addressType'
     document.getElementById('createAddressButton').addEventListener('click', (event) => {
         event.preventDefault();  
     
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));
     });
 
-    // [Path 4] GET - Read a specific address for a specific user - 'http://localhost:5000/users/addresses/get/:userID/:addressID'
+    // [Path 4] GET - Read a specific address for a specific user - 'http://localhost:5000/users/addresses/get/:refID/:addressID'
     window.editAddress = function (addressID) {     
         currentEditingAddressID = addressID;  // Change current Editing addressID
 
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Get this Address", response.data); 
             let addressData = {...response.data}; // light copy, avoid changing the original data
             delete addressData._id; 
-            delete addressData.userID; 
+            delete addressData.refID; 
             delete addressData.addressType; 
             delete addressData.modelRef; 
             delete addressData.__v;  
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));
     }
 
-    // [Path 5] PUT - Update a specific address for a specific user - 'http://localhost:5000/users/addresses/update/:userID/:addressID'
+    // [Path 5] PUT - Update a specific address for a specific user - 'http://localhost:5000/users/addresses/update/:refID/:addressID'
     document.getElementById('editAddressButton').addEventListener('click',  (event) => {
         event.preventDefault();
 
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message)); 
     });    
 
-    // [Path 6] DELETE - Delete a specific address for a specific user - '/users/:userID/addresses/delete/:addressID'   
+    // [Path 6] DELETE - Delete a specific address for a specific user - '/users/:refID/addresses/delete/:addressID'   
     window.deleteAddress = function(addressID) {
         axios.delete(`http://localhost:5000/users/addresses/delete/${currentEditingUserID}/${addressID}`)
         .then(response => {

@@ -9,23 +9,23 @@ router.route('/generate-address').get((request, response) => {
   response.json(address);
 });
 
-router.route('/get/:userID/:addressType').get((request, response) => {
+router.route('/get/:refID/:addressType').get((request, response) => {
   Address.find({ 
-    userID: request.params.userID, 
+    refID: request.params.refID, 
     addressType: request.params.addressType 
   })
     .then(addresses => response.json(addresses))
     .catch(error => response.status(400).json(error));
 });
 
-router.route('/create/:userID/:addressType').post((request, response) => {
-  const userID = request.params.userID;
+router.route('/create/:refID/:addressType').post((request, response) => {
+  const refID = request.params.refID;
   const addressType = request.params.addressType; 
   const modelRef = ((s) => s.charAt(0).toUpperCase() + s.slice(1))(addressType);
 
   const newAddress = new Address({
     ...request.body,
-    userID: new mongoose.Types.ObjectId(userID),
+    refID: new mongoose.Types.ObjectId(refID),
     modelRef: modelRef  
   });  
   // console.log(newAddress);
@@ -35,13 +35,13 @@ router.route('/create/:userID/:addressType').post((request, response) => {
     .catch(error => response.status(400).json(error));
 });
 
-router.route('/getone/:userID/:addressID').get((request, response) => {
+router.route('/getone/:refID/:addressID').get((request, response) => {
   Address.findById(request.params.addressID)
     .then(address => response.json(address))
     .catch(error => response.status(400).json(error));
 });
 
-router.route('/update/:userID/:addressID').put((request, response) => {
+router.route('/update/:refID/:addressID').put((request, response) => {
   const updateData = {
     ...request.body,
   };
@@ -53,7 +53,7 @@ router.route('/update/:userID/:addressID').put((request, response) => {
       .catch(error => response.status(400).json(error));
 });
 
-router.route('/delete/:userID/:addressID').delete((request, response) => {
+router.route('/delete/:refID/:addressID').delete((request, response) => {
   Address.findByIdAndDelete(request.params.addressID)
     .then(() => response.json(`Address ${request.params.addressID} deleted.`))
     .catch(error => response.status(400).json(error));

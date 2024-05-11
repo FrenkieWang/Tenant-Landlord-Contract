@@ -40,7 +40,7 @@ router.route('/update/:tenantID').put((request, response) => {
 
 router.route('/delete/:tenantID').delete((request, response) => {
   Tenant.findByIdAndDelete(request.params.tenantID)
-    .then(() => Address.deleteMany({ userID: request.params.tenantID }))
+    .then(() => Address.deleteMany({ refID: request.params.tenantID }))
     .then(() => response.json(`Tenant ${request.params.tenantID} and its Address deleted.`))
     .catch(error => response.status(400).json(error));
 });
