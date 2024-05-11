@@ -1,6 +1,6 @@
 # Detailed working (and tested) setup instructions
 
-1) Install relevant Packages:
+### 1-Install relevant Packages:
 
 Switch to the home directory (One level above the `fronend` and `backend` folder).
 
@@ -8,8 +8,7 @@ Open Terminal, type:
 
 **npm install express cors mongoose faker @faker-js/faker dotenv axios**
 
-
-2) Run the server:
+### 2-Run the server:
 
 Switch to `backend` folder
 
@@ -17,7 +16,7 @@ Open Terminal, type:
 
 **node server.js**
 
-3) Open the Webpage:
+### 3-Open the Webpage:
 
 Switch to `frontend` folder
 
