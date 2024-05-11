@@ -2,15 +2,15 @@
 
 ### 1-Install relevant Packages:
 
-Switch to the home directory (One level above the `fronend` and `backend` folder).
+Switch to the home directory (One level above the **fronend** and **backend** folder).
 
 Open Terminal, type:
 
-**npm install express cors mongoose faker @faker-js/faker dotenv axios**
+`npm install express cors mongoose faker @faker-js/faker dotenv axios`
 
 ### 2-Run the server:
 
-Switch to `backend` folder
+Switch to **backend** folder
 
 Open Terminal, type:
 
@@ -18,8 +18,8 @@ Open Terminal, type:
 
 ### 3-Open the Webpage:
 
-Switch to `frontend` folder
+Switch to **frontend** folder
 
 Reveal in File Explorer:
 
-Click and Open `homePage.html`.
+Click and Open **homePage.html**.
