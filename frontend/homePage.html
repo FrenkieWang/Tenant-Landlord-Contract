@@ -13,26 +13,22 @@
 </head>
 <body>
     <h3>Menu</h3>
-    <nav>
+    <nav id="mainNav">
         <ul>
             <li><a href="./tenant/tenantForm.html" target="contentFrame">Tenant</a></li>
             <li><a href="./landlord/landlordForm.html" target="contentFrame">Landlord</a></li>
             <li><a href="./Contract/ContractForm.html" target="contentFrame">Contract</a></li>
         </ul>
     </nav>
-
-    <a href></a>
-
      <!-- src = Default Page -->
-    <iframe id="content" name="contentFrame" src="./tenant/tenantForm.html"></iframe>
-
+    <iframe id="contentFrame" name="contentFrame" src="./tenant/tenantForm.html"></iframe>
     <script>
-        // Add Query Parameter in addressForm.html
-        window.showAddressTable = function(tenantID, addressType) {
-            var contentFrame = document.getElementById("content");
-            contentFrame.src  = 'addressForm.html?tenantID=' + tenantID 
-                + '&addressType=' + addressType;  
-        }  
+        document.getElementById('contentFrame').addEventListener('load', () => {
+            var mainNav = document.getElementById('mainNav');
+            var addressType = localStorage.getItem("addressType");
+            console.log(addressType);
+            mainNav.style.display = addressType ?  'none': 'block';
+        })
     </script>
 </body>
 </html>

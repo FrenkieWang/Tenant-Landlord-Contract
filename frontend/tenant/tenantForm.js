@@ -11,10 +11,6 @@ function toggleTitleOther(input) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {  
-    // Clear items in LocalStorage.
-    localStorage.removeItem('tenantID');
-    localStorage.removeItem('addressType');
-
     var currentEditingTenantID = null; // Make sure to edit only one tenant
     refreshTenants(); // Refresh Tenants when browser loaded
 

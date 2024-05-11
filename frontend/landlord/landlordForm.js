@@ -10,11 +10,7 @@ function toggleTitleOther(input) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {  
-    // Clear items in LocalStorage.
-    localStorage.removeItem('landlordID');
-    localStorage.removeItem('addressType');
-
+document.addEventListener('DOMContentLoaded', () => { 
     var currentEditingLandlordID = null; // Make sure to edit only one landlord
     refreshLandlords(); // Refresh Landlords when browser loaded
 

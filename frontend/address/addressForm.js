@@ -43,10 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // If already has the type of address, disable create <button>
             document.getElementById('createAddressButton').disabled = (addressArray.length !== 0);
 
-            if(addressArray.length === 1){
-                goBackLink.href = goBackLinkRef; 
-                goBackLink.style.color = "blue";  
-            }
+            // If there is no Address, disable the goBack Link 
+            goBackLink.href = (addressArray.length !== 0) ? goBackLinkRef : "#"; 
+            goBackLink.style.color = (addressArray.length !== 0) ? "blue" : "grey";   
             
             addressArray.forEach(currentAddress => {
                 const tr = document.createElement('tr');
@@ -85,10 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
             refreshAddresses(); // Refresh <table> after CREATE
             console.log(response.data, address);
             addressForm.reset(); // Clear the Form
-
-            // If there is no Address, disable the goBack Link 
-            goBackLink.href = goBackLinkRef; 
-            goBackLink.style.color = "blue";   
         })
         .catch(error => console.error(error.message));
     });
@@ -148,10 +143,15 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => {
             console.log(response.data);
             refreshAddresses(); // Refresh <table> after CREATE
-            // Disable the goBack Link 
-            goBackLink.href = "#";  
-            goBackLink.style.color = "grey";  
         })
         .catch(error => console.error(error.message));
     };  
+
+    // If link does not end with '#', Clear items in LocalStorage
+    goBackLink.addEventListener('click', () => {
+        if(goBackLink.href.slice(-1) !== '#'){
+            localStorage.removeItem('refID');
+            localStorage.removeItem('addressType');
+        }
+    })
 });
