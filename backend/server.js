@@ -11,17 +11,17 @@ const uri = process.env.ATLAS_URI;
 mongoose.connect(uri);
 const connection = mongoose.connection;
 connection.once('open', () => {
-  console.log("MongoDB database connected successfully!");
+  console.log("MongoDB database connected!");
 })
 
 // Configure Express Router
 const tenantRouter = require('./routes/tenantRoute');
-// const addressRouter = require('./routes/addressRoute');
+const addressRouter = require('./routes/addressRoute');
 // const phoneRouter = require('./routes/phoneRoute');
 // const orderRouter = require('./routes/orderRoute');
 
 app.use('/tenants', tenantRouter);
-// app.use('/tenants/addresses', addressRouter);
+app.use('/users/addresses', addressRouter);
 // app.use('/phones', phoneRouter);
 // app.use('/orders', orderRouter);
 

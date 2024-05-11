@@ -155,8 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Add items into LocalStorage
-    window.showAddressTable = function(tenantID, addressType) {
-        localStorage.setItem("tenantID", tenantID);
+    window.showAddressTable = function(userID, addressType) {
+        localStorage.setItem("userID", userID);
         localStorage.setItem("addressType", addressType);
     }  
 });
