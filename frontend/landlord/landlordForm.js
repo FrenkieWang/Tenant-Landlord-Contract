@@ -102,8 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
         axios.post('http://localhost:5000/landlords/create', landlord)
         .then(response => {
             refreshLandlords(); // Refresh <table> after CREATE
-            console.log(response.data, landlord);
+            console.log(`Landlord created: `, landlord);
             landlordForm.reset(); // Clear the Form
+            showAddressTable(response.data.landlordID, 'Landlord');
+            window.location.href = '../address/addressForm.html'; // Switch to Address Page
         })
         .catch(error => console.error(error.message));
     });  

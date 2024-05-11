@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const linkName = thisAddressType === "Property" ? "Contract" : thisAddressType;
     var goBackLink = document.getElementById("goBack");
-    goBackLink.href = `../${linkName.toLowerCase()}/${linkName.toLowerCase()}Form.html`;
+    var goBackLinkRef = `../${linkName.toLowerCase()}/${linkName.toLowerCase()}Form.html`;
     goBackLink.textContent = `Back to ${linkName} List`;
 
     document.getElementById('addressStatus').innerText = `CRUD for ${thisAddressType} (${currentEditingUserID})'s Address`;
@@ -43,6 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // If already has the type of address, disable create <button>
             document.getElementById('createAddressButton').disabled = (addressArray.length !== 0);
 
+            if(addressArray.length === 1){
+                goBackLink.href = goBackLinkRef; 
+                goBackLink.style.color = "blue";  
+            }
+            
             addressArray.forEach(currentAddress => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -80,6 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
             refreshAddresses(); // Refresh <table> after CREATE
             console.log(response.data, address);
             addressForm.reset(); // Clear the Form
+
+            // If there is no Address, disable the goBack Link 
+            goBackLink.href = goBackLinkRef; 
+            goBackLink.style.color = "blue";   
         })
         .catch(error => console.error(error.message));
     });
@@ -128,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addressForm.reset(); // Reset the form
 
             // Disable edit <button>
-            document.getElementById('editAddressButton').disabled = true;
+            document.getElementById('editAddressButton').disabled = true; 
         })
         .catch(error => console.error(error.message)); 
     });    
@@ -139,6 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => {
             console.log(response.data);
             refreshAddresses(); // Refresh <table> after CREATE
+            // Disable the goBack Link 
+            goBackLink.href = "#";  
+            goBackLink.style.color = "grey";  
         })
         .catch(error => console.error(error.message));
     };  

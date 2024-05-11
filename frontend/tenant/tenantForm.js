@@ -89,8 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
         axios.post('http://localhost:5000/tenants/create', tenant)
         .then(response => {
             refreshTenants(); // Refresh <table> after CREATE
-            console.log(response.data, tenant);
+            console.log(`Tenant created: `, tenant);
             tenantForm.reset(); // Clear the Form
+            showAddressTable(response.data.tenantID, 'Tenant');
+            window.location.href = '../address/addressForm.html'; // Switch to Address Page 
         })
         .catch(error => console.error(error.message));
     });  

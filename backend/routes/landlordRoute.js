@@ -20,7 +20,7 @@ router.route('/create').post((request, response) => {
   const newLandlord = new Landlord(request.body);  
   
   newLandlord.save()
-    .then(() => response.json('Landlord added!'))
+    .then(landlord => response.json({ message: 'Landlord added!', landlordID: landlord._id }))
     .catch(error => response.status(400).json(error));
 });
 

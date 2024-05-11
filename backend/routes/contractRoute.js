@@ -25,7 +25,7 @@ router.route('/create').post((request, response) => {
   const newContract = new Contract(request.body);
 
   newContract.save()
-    .then(() => response.json('Contract added!'))
+    .then(contract => response.json({ message: 'Contract added!', contractID: contract._id }))
     .catch(error => response.status(400).json(error));
 });
 

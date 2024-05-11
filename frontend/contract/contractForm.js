@@ -200,10 +200,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }          
 
         axios.post('http://localhost:5000/contracts/create', contract)
-        .then(() => {
+        .then(response => {
             refreshContracts(); // Refresh <table> after CREATE
             console.log(`Contract created: `, contract);
             contractForm.reset(); // Clear the form
+            showAddressTable(response.data.contractID, 'Property');
+            window.location.href = '../address/addressForm.html'; // Switch to Address Page 
         })
         .catch(error => console.error(error.message));
     });      
