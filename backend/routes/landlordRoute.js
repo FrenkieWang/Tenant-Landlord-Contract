@@ -1,6 +1,7 @@
 const router = require('express').Router();
 let Landlord = require('../models/landlordModel');
 let Address = require('../models/addressModel');
+let Contract = require('../models/contractModel');
 const generateRandomLandlord = require('./faker/fakerLandlord'); 
 
 router.route('/generate-landlord').get((request, response) => {
@@ -39,9 +40,20 @@ router.route('/update/:landlordID').put((request, response) => {
 });
 
 router.route('/delete/:landlordID').delete((request, response) => {
-  Landlord.findByIdAndDelete(request.params.landlordID)
-    .then(() => Address.deleteMany({ refID: request.params.landlordID }))
-    .then(() => response.json(`Landlord ${request.params.landlordID} and its Address deleted.`))
+  Landlord.findByIdAndDelete(request.params.landlordID) // delete Landlord
+    .then(() => Address.deleteOne({ refID: request.params.landlordID })) // delete Landlord's Address
+    .then(() => Contract.find({ landlordID: request.params.landlordID }).select('_id')) // Get All Landlord's Contract ID
+    .then((contracts) => {
+      const deletionPromises = contracts.map(contract =>
+        Address.deleteOne({ refID: contract._id }) // Delete Contract's Address
+          .then(() => 
+            Contract.deleteOne({ _id: contract._id }) // Delete Landlord's Contract
+          )
+      );
+      return Promise.all(deletionPromises);
+    }) // Delete Landlord's Contract
+    .then(() => response.json(`Landlord ${request.params.landlordID} deleted,
+      and all related addresses and contracts deleted.`)) 
     .catch(error => response.status(400).json(error));
 });
 

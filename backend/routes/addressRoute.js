@@ -27,7 +27,7 @@ router.route('/create/:refID/:addressType').post((request, response) => {
     refID: new mongoose.Types.ObjectId(refID),
     modelRef: modelRef
   });  
-  console.log(newAddress);
+  // console.log(newAddress);
   
   newAddress.save()
     .then(() => response.json('Address added!'))
@@ -44,7 +44,7 @@ router.route('/update/:refID/:addressID').put((request, response) => {
   const updateData = {
     ...request.body,
   };
-  console.log(updateData);
+  // console.log(updateData);
 
   Address.findByIdAndUpdate(request.params.addressID,
     updateData, { new: true, runValidators: true })

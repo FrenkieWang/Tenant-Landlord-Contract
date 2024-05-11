@@ -49,7 +49,7 @@ router.route('/update/:contractID').put((request, response) => {
 
 router.route('/delete/:contractID').delete((request, response) => {
   Contract.findByIdAndDelete(request.params.contractID)
-    .then(() => Address.deleteMany({ refID: request.params.contractID }))
+    .then(() => Address.deleteOne({ refID: request.params.contractID }))
     .then(() => response.json(`Contract Property ${request.params.contractID} and its Address deleted.`))
     .catch(error => response.status(400).json(error));
 });

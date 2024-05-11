@@ -7,8 +7,8 @@ function generateRandomContract() {
   
   const contract = {
     contractDate: dateWithinNextYear,
-    monthlyFee: faker.datatype.number({ min: 200, max: 6000 }), 
-    doorNumber: faker.datatype.number({ min: 1, max: 99 }), 
+    monthlyFee: faker.number.int({ min: 200, max: 6000 }), 
+    doorNumber: faker.number.int({ min: 1, max: 99 }), 
     contractLength: thisContractLength,
     propertyType: thisPropertyType,
     propertyTypeOther: thisPropertyType === 'Other' ? faker.lorem.words(2) : undefined, 
