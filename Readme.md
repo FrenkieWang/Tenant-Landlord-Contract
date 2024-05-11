@@ -28,7 +28,7 @@ Open Terminal, type:
 You can see **"Server is running on port"** and 
 **"MongoDB database connected successfully"** in your console.
 
-### 3-Open the Webpage:
+### 3-Open the Web Page:
 
 Switch to **frontend** folder
 
