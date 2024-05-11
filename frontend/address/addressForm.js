@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${currentAddress.refID}</td>
-                    <td>${currentAddress._id.toString()}</td>
                     <td>${currentAddress.addressType}</td>
                     <td>${currentAddress.addressLine1} &nbsp; ${currentAddress.addressLine2 || ''}</td>
                     <td>${currentAddress.town}</td>
