@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error(error.message));
     };  
 
-    // If link does not end with '#', Clear items in LocalStorage
+    // [Link Click] - If Ref does not end with '#', Clear items in LocalStorage
     goBackLink.addEventListener('click', () => {
         if(goBackLink.href.slice(-1) !== '#'){
             localStorage.removeItem('refID');
