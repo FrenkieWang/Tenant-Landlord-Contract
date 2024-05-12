@@ -56,7 +56,7 @@ if **Contract** is deleted, its **Tenant** will not be deleted.
 ER-Design:
 https://online.visual-paradigm.com/drive/#diagramlist:proj=0&new=ERDiagram
 
-database_design[./database_design.png]
+![database_design](database_design.png)
 
 
 ## MongoDB
