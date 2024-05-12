@@ -45,13 +45,13 @@ router.route('/delete/:landlordID').delete((request, response) => {
     .then(() => Contract.find({ landlordID: request.params.landlordID }).select('_id')) // Get All Landlord's Contract ID
     .then((contracts) => {
       const deletionPromises = contracts.map(contract =>
-        Address.deleteOne({ refID: contract._id }) // Delete Contract's Address
+        Address.deleteOne({ refID: contract._id }) // Delete the Contract's Address
           .then(() => 
-            Contract.deleteOne({ _id: contract._id }) // Delete Landlord's Contract
+            Contract.deleteOne({ _id: contract._id }) // Delete the Contract
           )
       );
-      return Promise.all(deletionPromises);
-    }) // Delete Landlord's Contract
+      return Promise.all(deletionPromises); 
+    }) 
     .then(() => response.json(`Landlord ${request.params.landlordID} deleted,
       and all related addresses and contracts deleted.`)) 
     .catch(error => response.status(400).json(error));
