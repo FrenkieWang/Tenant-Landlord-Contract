@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contract Detail</title>
+    <style>
+        input[readonly] {
+            width: min-content;
+        }
+    </style>
+</head>
+<body>
+    <div class = "app">
+        <h1>Contract Detail</h1>
+        <h2>Property Information</h2>
+        <form id="contractForm">
+            <div>
+                <label>Contract ID:</label>
+                <input type="text" name="_id" readonly>
+            </div>
+            <div>
+                <label>Contract Date:</label>
+                <input type="date" name="contractDate" readonly>
+            </div>
+            <div>
+                <label>Monthly Fee (€):</label>
+                <input type="number" name="monthlyFee" readonly>
+            </div>
+            <div>
+                <label>Door Number:</label>
+                <input type="text" name="doorNumber" readonly>
+            </div>
+            <div>
+                <label>Contract Length:</label>
+                <input type="text" name="contractLength" readonly>
+            </div>
+            <div>
+                <label>Property Type:</label>
+                <input type="text" name="propertyType" readonly>
+            </div>  
+            <div>
+                <label>Property Type Other:</label>
+                <input type="text" name="propertyTypeOther" readonly>
+            </div>
+        </form>      
+        <form id="addressForm">
+            <div>
+                <label>Address Line 1:</label>
+                <input type="text" name="addressLine1" readonly/>
+            </div>
+            <div>
+                <label>Address Line 2:</label>
+                <input type="text" name="addressLine2" readonly/>
+            </div>
+            <div>
+                <label>Town/City:</label>
+                <input type="text" name="town" readonly/>
+            </div>
+            <div>
+                <label>County/City:</label>
+                <input type="text" name="countyCity" readonly/>
+            </div>
+            <div>
+                <label>Eircode:</label>
+                <input type="text" name="eircode" readonly/>
+            </div>
+        </form>    
+        
+        <h2>Landlord Information</h2>
+        <div id="landlordList">
+            <!-- Landlord Detail will be loaded here by JavaScript -->
+        </div>
+
+        <a href="./contractForm.html" id="menu">Go Back to Menu</a>     
+    </div> <!-- END of APP -->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./contractDetail.js"></script>
+</body>
+</html>

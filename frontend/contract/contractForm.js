@@ -159,6 +159,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${currentContract.contractLength}</td>
                     <td>${propertyTypeDisplay}</td>
                     <td>
+                        <a href="./contractDetail.html" onclick="showAddressTable('${currentContract._id.toString()}', 'Property');">
+                            Check Detail
+                        </a>
+                    </td>
+                    <td>
                         <a href="#" onclick="editContract('${currentContract._id.toString()}')">edit</a> / 
                         <a href="#" onclick="deleteContract('${currentContract._id.toString()}')">delete</a>
                     </td>

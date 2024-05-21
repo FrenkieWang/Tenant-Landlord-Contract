@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {  
     // Get items from LocalStorage
-    const currentEditingUserID = localStorage.getItem("refID");
+    const currentEditingRefID = localStorage.getItem("refID");
     const thisAddressType = localStorage.getItem("addressType");
 
     const linkName = thisAddressType === "Property" ? "Contract" : thisAddressType;
@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var goBackLinkRef = `../${linkName.toLowerCase()}/${linkName.toLowerCase()}Form.html`;
     goBackLink.textContent = `Back to ${linkName} List`;
 
-    document.getElementById('addressStatus').innerText = `CRUD for ${thisAddressType} (${currentEditingUserID})'s Address`;
+    document.getElementById('addressStatus').innerText = `CRUD for ${thisAddressType} (${currentEditingRefID})'s Address`;
     var currentEditingAddressID = null; // Make sure to edit only one addresss
     refreshAddresses();   // Refresh Addresses in refID 
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // [Path 2] GET - Read all addresses for a specific user - 'http://localhost:5000/users/addresses/get/:refID/:addressType'
     function refreshAddresses() {
-        axios.get(`http://localhost:5000/users/addresses/get/${currentEditingUserID}/${thisAddressType}`)
+        axios.get(`http://localhost:5000/users/addresses/get/${currentEditingRefID}/${thisAddressType}`)
         .then(response => {
             const addressList = document.getElementById('addressList');
             addressList.innerHTML = '';  // Clear Address Table
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         address.addressType = thisAddressType;
         console.log(address);
         
-        axios.post(`http://localhost:5000/users/addresses/create/${currentEditingUserID}/${thisAddressType}`, address)
+        axios.post(`http://localhost:5000/users/addresses/create/${currentEditingRefID}/${thisAddressType}`, address)
         .then(response => {
             refreshAddresses(); // Refresh <table> after CREATE
             console.log(response.data, address);
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.editAddress = function (addressID) {     
         currentEditingAddressID = addressID;  // Change current Editing addressID
 
-        axios.get(`http://localhost:5000/users/addresses/getone/${currentEditingUserID}/${currentEditingAddressID}`)
+        axios.get(`http://localhost:5000/users/addresses/getone/${currentEditingRefID}/${currentEditingAddressID}`)
         .then(response => {
             console.log("Get this Address", response.data); 
             let addressData = {...response.data}; // light copy, avoid changing the original data
@@ -125,10 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
         var address = {};    
         formData.forEach((value, name) => address[name] = value);
         
-        axios.put(`http://localhost:5000/users/addresses/update/${currentEditingUserID}/${currentEditingAddressID}`, address)
+        axios.put(`http://localhost:5000/users/addresses/update/${currentEditingRefID}/${currentEditingAddressID}`, address)
         .then(response => {
             refreshAddresses(); // Refresh <table> after CREATE
-            console.log(`Address: ${currentEditingAddressID} of User: ${currentEditingUserID} updated:`, response.data);
+            console.log(`Address: ${currentEditingAddressID} of User: ${currentEditingRefID} updated:`, response.data);
             addressForm.reset(); // Reset the form
 
             // Disable edit <button>
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // [Path 6] DELETE - Delete a specific address for a specific user - '/users/:refID/addresses/delete/:addressID'   
     window.deleteAddress = function(addressID) {
-        axios.delete(`http://localhost:5000/users/addresses/delete/${currentEditingUserID}/${addressID}`)
+        axios.delete(`http://localhost:5000/users/addresses/delete/${currentEditingRefID}/${addressID}`)
         .then(response => {
             console.log(response.data);
             refreshAddresses(); // Refresh <table> after CREATE
